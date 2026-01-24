@@ -61,6 +61,14 @@ export class MobileAccessLogin {
                     lastUrl = currentUrl
                 }
 
+                // Passkey interrupt handling
+                if (currentUrl.includes('interrupt/passkey/enroll')) {
+                    this.bot.logger.info(this.bot.isMobile, 'LOGIN-APP', 'Passkey enrollment interrupt detected, cancelling...')
+                    await this.bot.browser.utils.ghostClick(this.page, '[data-testid="secondaryButton"]')
+                    await this.bot.utils.wait(2000)
+                    continue
+                }
+
                 try {
                     const url = new URL(currentUrl)
 

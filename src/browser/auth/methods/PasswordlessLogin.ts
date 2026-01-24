@@ -6,7 +6,7 @@ export class PasswordlessLogin {
     private readonly numberDisplaySelector = 'div[data-testid="displaySign"]'
     private readonly approvalPath = '/ppsecure/post.srf'
 
-    constructor(private bot: MicrosoftRewardsBot) {}
+    constructor(private bot: MicrosoftRewardsBot) { }
 
     private async getDisplayedNumber(page: Page): Promise<string | null> {
         try {
@@ -48,6 +48,14 @@ export class PasswordlessLogin {
                         'LOGIN-PASSWORDLESS',
                         `Still waiting... (${attempt}/${this.maxAttempts} seconds elapsed)`
                     )
+                }
+
+                // Check for alternative sign in options
+                const passwordOption = await page.getByText('Use my password').or(page.getByText('Use your password')).or(page.locator('[data-testid="tile"]:has(svg path[d*="M11.78 10.22a.75.75"])')).first();
+                if (await passwordOption.isVisible().catch(() => false)) {
+                    this.bot.logger.info(this.bot.isMobile, 'LOGIN-PASSWORDLESS', 'Alternative password option detected, switching...');
+                    await passwordOption.click();
+                    return true;
                 }
 
                 await this.bot.utils.wait(1000)
@@ -95,7 +103,7 @@ export class PasswordlessLogin {
 
             if (approved) {
                 this.bot.logger.info(this.bot.isMobile, 'LOGIN-PASSWORDLESS', 'Login approved successfully')
-                await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {})
+                await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => { })
             } else {
                 this.bot.logger.error(this.bot.isMobile, 'LOGIN-PASSWORDLESS', 'Login approval failed or timed out')
                 throw new Error('Passwordless authentication timeout')

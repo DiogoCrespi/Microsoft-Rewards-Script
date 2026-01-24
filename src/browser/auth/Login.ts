@@ -44,6 +44,7 @@ export class Login {
         emailIconOld: 'img[data-testid="accessibleImg"][src*="picker_verify_email"]',
         recoveryEmail: '[data-testid="proof-confirmation"]',
         passwordIcon: '[data-testid="tile"]:has(svg path[d*="M11.78 10.22a.75.75"])',
+        passwordText: 'span:text-is("Use your password")',
         accountLocked: '#serviceAbuseLandingTitle',
         errorAlert: 'div[role="alert"]',
         passwordEntry: '[data-testid="passwordEntry"]',
@@ -73,7 +74,7 @@ export class Login {
         try {
             this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Starting login process')
 
-            await page.goto('https://www.bing.com/rewards/dashboard', { waitUntil: 'domcontentloaded' }).catch(() => {})
+            await page.goto('https://www.bing.com/rewards/dashboard', { waitUntil: 'domcontentloaded' }).catch(() => { })
             await this.bot.utils.wait(2000)
             await this.bot.browser.utils.reloadBadPage(page)
             await this.bot.browser.utils.disableFido(page)
@@ -149,7 +150,7 @@ export class Login {
     }
 
     private async detectCurrentState(page: Page, account?: Account): Promise<LoginState> {
-        await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {})
+        await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => { })
 
         const url = new URL(page.url())
         this.bot.logger.debug(this.bot.isMobile, 'DETECT-STATE', `Current URL: ${url.hostname}${url.pathname}`)
@@ -179,6 +180,7 @@ export class Login {
             [this.selectors.passKeyVideo, 'PASSKEY_VIDEO'],
             [this.selectors.passKeyError, 'PASSKEY_ERROR'],
             [this.selectors.passwordIcon, 'SIGN_IN_ANOTHER_WAY'],
+            [this.selectors.passwordText, 'SIGN_IN_ANOTHER_WAY'],
             [this.selectors.emailIcon, 'SIGN_IN_ANOTHER_WAY_EMAIL'],
             [this.selectors.emailIconOld, 'SIGN_IN_ANOTHER_WAY_EMAIL'],
             [this.selectors.passwordlessCheck, 'LOGIN_PASSWORDLESS'],
@@ -381,7 +383,7 @@ export class Login {
                             waitUntil: 'domcontentloaded',
                             timeout: 10000
                         })
-                        .catch(() => {})
+                        .catch(() => { })
                     await this.bot.utils.wait(3000)
                     this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Recovery navigation successful')
                     return true
@@ -392,7 +394,7 @@ export class Login {
                             waitUntil: 'domcontentloaded',
                             timeout: 10000
                         })
-                        .catch(() => {})
+                        .catch(() => { })
                     await this.bot.utils.wait(3000)
                     this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Fallback navigation successful')
                     return true
@@ -408,7 +410,14 @@ export class Login {
 
             case 'SIGN_IN_ANOTHER_WAY': {
                 this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Selecting "Use my password"')
-                await this.bot.browser.utils.ghostClick(page, this.selectors.passwordIcon)
+
+                const passwordTextVisible = await this.checkSelector(page, this.selectors.passwordText)
+                if (passwordTextVisible) {
+                    await this.bot.browser.utils.ghostClick(page, this.selectors.passwordText)
+                } else {
+                    await this.bot.browser.utils.ghostClick(page, this.selectors.passwordIcon)
+                }
+
                 await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {
                     this.bot.logger.debug(this.bot.isMobile, 'LOGIN', 'Network idle timeout after password icon click')
                 })
@@ -466,7 +475,7 @@ export class Login {
     private async finalizeLogin(page: Page, email: string) {
         this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Finalizing login')
 
-        await page.goto(this.bot.config.baseURL, { waitUntil: 'networkidle', timeout: 10000 }).catch(() => {})
+        await page.goto(this.bot.config.baseURL, { waitUntil: 'networkidle', timeout: 10000 }).catch(() => { })
 
         const loginRewardsSuccess = new URL(page.url()).hostname === 'rewards.bing.com'
         if (loginRewardsSuccess) {
@@ -497,7 +506,7 @@ export class Login {
         this.bot.logger.info(this.bot.isMobile, 'LOGIN-BING', 'Verifying Bing session')
 
         try {
-            await page.goto(url, { waitUntil: 'networkidle', timeout: 10000 }).catch(() => {})
+            await page.goto(url, { waitUntil: 'networkidle', timeout: 10000 }).catch(() => { })
 
             for (let i = 0; i < loopMax; i++) {
                 if (page.isClosed()) break
@@ -519,7 +528,7 @@ export class Login {
                 )
 
                 if (atBingHome) {
-                    await this.bot.browser.utils.tryDismissAllMessages(page).catch(() => {})
+                    await this.bot.browser.utils.tryDismissAllMessages(page).catch(() => { })
 
                     const signedIn = await page
                         .waitForSelector(this.selectors.bingProfile, { timeout: 3000 })
@@ -555,7 +564,7 @@ export class Login {
         try {
             await page
                 .goto(`${this.bot.config.baseURL}?_=${Date.now()}`, { waitUntil: 'networkidle', timeout: 10000 })
-                .catch(() => {})
+                .catch(() => { })
 
             for (let i = 0; i < loopMax; i++) {
                 if (page.isClosed()) break
