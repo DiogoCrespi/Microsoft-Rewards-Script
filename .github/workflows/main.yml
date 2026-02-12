@@ -10,10 +10,10 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Random Delay (0-60 min)
+            - name: Random Delay (0-30 min)
               run: |
                   echo "Sleeping for a random time..."
-                  sleep $((RANDOM % 3600))
+                  sleep $((RANDOM % 1800))
 
             - name: Checkout repository
               uses: actions/checkout@v4
