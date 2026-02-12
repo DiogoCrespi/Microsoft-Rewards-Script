@@ -10,10 +10,15 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Random Delay (0-30 min)
+            - name: Random Delay (Schedule only)
               run: |
-                  echo "Sleeping for a random time..."
-                  sleep $((RANDOM % 1800))
+                  current_hour=$(date -u +%H)
+                  if [ "$current_hour" -eq "07" ]; then
+                      echo "Scheduled run detected (07:00 UTC). Sleeping for a random time..."
+                      sleep $((RANDOM % 1800))
+                  else
+                      echo "Manual or test run detected. Skipping delay."
+                  fi
 
             - name: Checkout repository
               uses: actions/checkout@v4
