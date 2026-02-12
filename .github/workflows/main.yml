@@ -51,6 +51,9 @@ jobs:
             - name: Install Playwright Browsers
               run: npx patchright install chromium
 
+            - name: Build Project
+              run: npm run build
+
             - name: Run Script
               env:
                   ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
