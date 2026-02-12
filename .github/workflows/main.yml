@@ -59,4 +59,4 @@ jobs:
                   ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
                   CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
                   TZ: 'America/New_York' # Optional: Set timezone if needed
-              run: npm start
+              run: xvfb-run --auto-servernum npm start
