@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
 import axiosRetry from 'axios-retry'
 import { HttpProxyAgent } from 'http-proxy-agent'
 import { HttpsProxyAgent } from 'https-proxy-agent'
@@ -6,13 +6,12 @@ import { SocksProxyAgent } from 'socks-proxy-agent'
 import { URL } from 'url'
 import type { AccountProxy } from '../interface/Account'
 
-class AxiosClient {
+export default class AxiosClient {
     private instance: AxiosInstance
     private account: AccountProxy
 
     constructor(account: AccountProxy) {
         this.account = account
-
         this.instance = axios.create({
             timeout: 20000
         })
@@ -30,18 +29,14 @@ class AxiosClient {
             retryCondition: error => {
                 if (axiosRetry.isNetworkError(error)) return true
                 if (!error.response) return true
-
                 const status = error.response.status
                 return status === 429 || (status >= 500 && status <= 599)
             }
         })
     }
 
-    private getAgentForProxy(
-        proxyConfig: AccountProxy
-    ): HttpProxyAgent<string> | HttpsProxyAgent<string> | SocksProxyAgent {
+    getAgentForProxy(proxyConfig: AccountProxy) {
         const { url: baseUrl, port, username, password } = proxyConfig
-
         let urlObj: URL
         try {
             urlObj = new URL(baseUrl)
@@ -78,18 +73,15 @@ class AxiosClient {
         }
     }
 
-    public async request(config: AxiosRequestConfig, bypassProxy = false): Promise<AxiosResponse> {
+    async request<T = any>(config: AxiosRequestConfig, bypassProxy = false) {
         if (bypassProxy) {
             const bypassInstance = axios.create()
             axiosRetry(bypassInstance, {
                 retries: 3,
                 retryDelay: axiosRetry.exponentialDelay
             })
-            return bypassInstance.request(config)
+            return bypassInstance.request<T>(config)
         }
-
-        return this.instance.request(config)
+        return this.instance.request<T>(config)
     }
 }
-
-export default AxiosClient

@@ -47,13 +47,13 @@ class Browser {
         try {
             const proxyConfig = account.proxy.url
                 ? {
-                      server: this.formatProxyServer(account.proxy),
-                      ...(account.proxy.username &&
-                          account.proxy.password && {
-                              username: account.proxy.username,
-                              password: account.proxy.password
-                          })
-                  }
+                    server: this.formatProxyServer(account.proxy),
+                    ...(account.proxy.username &&
+                        account.proxy.password && {
+                        username: account.proxy.username,
+                        password: account.proxy.password
+                    })
+                }
                 : undefined
 
             browser = await rebrowser.chromium.launch({
@@ -108,7 +108,7 @@ class Browser {
 
             return { context: context as unknown as BrowserContext, fingerprint }
         } catch (error) {
-            await browser.close().catch(() => {})
+            await browser.close().catch(() => { })
             throw error
         }
     }

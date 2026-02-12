@@ -4,6 +4,8 @@ dist/
 node_modules/
 src/accounts.json
 src/config.json
+accounts.json
+config.json
 /.vscode
 /diagnostics
 note
@@ -14,3 +16,6 @@ accounts.main.json
 bun.lock
 logs/
 .stfolder/
+remote_accounts.json
+temp_config.json
+

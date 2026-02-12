@@ -6,7 +6,7 @@ export class PasswordlessLogin {
     private readonly numberDisplaySelector = 'div[data-testid="displaySign"]'
     private readonly approvalPath = '/ppsecure/post.srf'
 
-    constructor(private bot: MicrosoftRewardsBot) { }
+    constructor(private bot: MicrosoftRewardsBot) {}
 
     private async getDisplayedNumber(page: Page): Promise<string | null> {
         try {
@@ -51,11 +51,19 @@ export class PasswordlessLogin {
                 }
 
                 // Check for alternative sign in options
-                const passwordOption = await page.getByText('Use my password').or(page.getByText('Use your password')).or(page.locator('[data-testid="tile"]:has(svg path[d*="M11.78 10.22a.75.75"])')).first();
+                const passwordOption = await page
+                    .getByText('Use my password')
+                    .or(page.getByText('Use your password'))
+                    .or(page.locator('[data-testid="tile"]:has(svg path[d*="M11.78 10.22a.75.75"])'))
+                    .first()
                 if (await passwordOption.isVisible().catch(() => false)) {
-                    this.bot.logger.info(this.bot.isMobile, 'LOGIN-PASSWORDLESS', 'Alternative password option detected, switching...');
-                    await passwordOption.click();
-                    return true;
+                    this.bot.logger.info(
+                        this.bot.isMobile,
+                        'LOGIN-PASSWORDLESS',
+                        'Alternative password option detected, switching...'
+                    )
+                    await passwordOption.click()
+                    return true
                 }
 
                 await this.bot.utils.wait(1000)
@@ -84,12 +92,21 @@ export class PasswordlessLogin {
             const displayedNumber = await this.getDisplayedNumber(page)
 
             if (displayedNumber) {
+                // Force output to terminal regardless of log filters
+                console.log('\n' + '='.repeat(60))
+                console.log('🔢 NÚMERO PARA SELECIONAR NO APP: ' + displayedNumber)
+                console.log('⏱️  Aguardando 10 segundos para você interagir no celular...')
+                console.log('='.repeat(60) + '\n')
+
                 this.bot.logger.info(
                     this.bot.isMobile,
                     'LOGIN-PASSWORDLESS',
                     `Please approve login and select number: ${displayedNumber}`,
                     'yellowBright'
                 )
+
+                // Give extra time to interact with the phone before starting approval check
+                await this.bot.utils.wait(10000)
             } else {
                 this.bot.logger.info(
                     this.bot.isMobile,
@@ -103,7 +120,7 @@ export class PasswordlessLogin {
 
             if (approved) {
                 this.bot.logger.info(this.bot.isMobile, 'LOGIN-PASSWORDLESS', 'Login approved successfully')
-                await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => { })
+                await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {})
             } else {
                 this.bot.logger.error(this.bot.isMobile, 'LOGIN-PASSWORDLESS', 'Login approval failed or timed out')
                 throw new Error('Passwordless authentication timeout')

@@ -1,9 +1,7 @@
+// Validator utils
 import { z } from 'zod'
 import semver from 'semver'
 import pkg from '../../package.json'
-
-import { Config } from '../interface/Config'
-import { Account } from '../interface/Account'
 
 const NumberOrString = z.union([z.number(), z.string()])
 
@@ -103,23 +101,21 @@ export const AccountSchema = z.object({
     })
 })
 
-export function validateConfig(data: unknown): Config {
-    return ConfigSchema.parse(data) as Config
+export function validateConfig(data: any): any {
+    return ConfigSchema.parse(data)
 }
 
-export function validateAccounts(data: unknown): Account[] {
+export function validateAccounts(data: any): any {
     return z.array(AccountSchema).parse(data)
 }
 
 export function checkNodeVersion(): void {
     try {
         const requiredVersion = pkg.engines?.node
-
         if (!requiredVersion) {
             console.warn('No Node.js version requirement found in package.json "engines" field.')
             return
         }
-
         if (!semver.satisfies(process.version, requiredVersion)) {
             console.error(`Current Node.js version ${process.version} does not satisfy requirement: ${requiredVersion}`)
             process.exit(1)

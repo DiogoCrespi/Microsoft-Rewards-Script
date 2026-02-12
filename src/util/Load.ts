@@ -11,6 +11,12 @@ let configCache: Config
 
 export function loadAccounts(): Account[] {
     try {
+        if (process.env.ACCOUNTS_JSON) {
+            const accountsData = JSON.parse(process.env.ACCOUNTS_JSON)
+            validateAccounts(accountsData)
+            return accountsData
+        }
+
         let file = 'accounts.json'
 
         if (process.argv.includes('-dev')) {
@@ -35,7 +41,23 @@ export function loadConfig(): Config {
             return configCache
         }
 
+        if (process.env.CONFIG_JSON) {
+            const configData = JSON.parse(process.env.CONFIG_JSON)
+            validateConfig(configData)
+            configCache = configData
+            return configData
+        }
+
         const configDir = path.join(__dirname, '../', 'config.json')
+
+        if (!fs.existsSync(configDir)) {
+            // Check if we are in environment where we expect env vars only
+            if (process.env.CI || process.env.GITHUB_ACTIONS) {
+                throw new Error(`Config file not found at ${configDir} and CONFIG_JSON env var not set`)
+            }
+            // For local dev, maybe acceptable if not found? No, usually required.
+        }
+
         const config = fs.readFileSync(configDir, 'utf-8')
 
         const configData = JSON.parse(config)

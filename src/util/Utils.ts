@@ -1,38 +1,32 @@
-import ms, { StringValue } from 'ms'
+import ms = require('ms')
 
 export default class Util {
     async wait(time: number | string): Promise<void> {
         if (typeof time === 'string') {
             time = this.stringToNumber(time)
         }
-
-        return new Promise<void>(resolve => {
-            setTimeout(resolve, time)
+        return new Promise(resolve => {
+            setTimeout(resolve, time as number)
         })
     }
 
-    getFormattedDate(ms = Date.now()): string {
+    getFormattedDate(ms: number = Date.now()): string {
         const today = new Date(ms)
         const month = String(today.getMonth() + 1).padStart(2, '0') // January is 0
         const day = String(today.getDate()).padStart(2, '0')
         const year = today.getFullYear()
-
         return `${month}/${day}/${year}`
     }
 
     shuffleArray<T>(array: T[]): T[] {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
-
             const a = array[i]
             const b = array[j]
-
             if (a === undefined || b === undefined) continue
-
             array[i] = b
             array[j] = a
         }
-
         return array
     }
 
@@ -43,12 +37,10 @@ export default class Util {
     chunkArray<T>(arr: T[], numChunks: number): T[][] {
         const chunkSize = Math.ceil(arr.length / numChunks)
         const chunks: T[][] = []
-
         for (let i = 0; i < arr.length; i += chunkSize) {
             const chunk = arr.slice(i, i + chunkSize)
             chunks.push(chunk)
         }
-
         return chunks
     }
 
@@ -57,15 +49,12 @@ export default class Util {
             return input
         }
         const value = input.trim()
-
-        const milisec = ms(value as StringValue)
-
+        const milisec = ms(value as any) as unknown as number
         if (milisec === undefined) {
             throw new Error(
                 `The input provided (${input}) cannot be parsed to a valid time! Use a format like "1 min", "1m" or "1 minutes"`
             )
         }
-
         return milisec
     }
 
@@ -82,7 +71,7 @@ export default class Util {
         return email.split('@')[0] ?? 'Unknown'
     }
 
-    randomDelay(min: string | number, max: string | number): number {
+    randomDelay(min: number | string, max: number | string): number {
         const minMs = typeof min === 'number' ? min : this.stringToNumber(min)
         const maxMs = typeof max === 'number' ? max : this.stringToNumber(max)
         return Math.floor(this.randomNumber(minMs, maxMs))

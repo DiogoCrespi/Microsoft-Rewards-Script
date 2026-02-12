@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import type { Page } from 'patchright'
 
-export async function errorDiagnostic(page: Page, error: Error): Promise<void> {
+export async function errorDiagnostic(page: Page, error: Error) {
     try {
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
         const folderName = `error-${timestamp}`
@@ -11,7 +11,6 @@ export async function errorDiagnostic(page: Page, error: Error): Promise<void> {
         if (!page) {
             return
         }
-
         if (page.isClosed()) {
             return
         }

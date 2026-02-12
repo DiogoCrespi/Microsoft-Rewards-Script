@@ -45,7 +45,7 @@ function formatMessage(message: string | Error): string {
 }
 
 export class Logger {
-    constructor(private bot: MicrosoftRewardsBot) {}
+    constructor(private bot: MicrosoftRewardsBot) { }
 
     info(isMobile: Platform, title: string, message: string, color?: ColorKey) {
         return this.baseLog('info', isMobile, title, message, color)
@@ -143,11 +143,6 @@ export class Logger {
             return true
         }
 
-        // Always log error levelo logs, remove these lines to disable this!
-        if (level === 'error') {
-            return true
-        }
-
         const { mode, levels, keywords, regexPatterns } = filter
 
         const hasLevelRule = Array.isArray(levels) && levels.length > 0
@@ -180,7 +175,7 @@ export class Logger {
                         isMatch = true
                         break
                     }
-                } catch {}
+                } catch { }
             }
         }
 
