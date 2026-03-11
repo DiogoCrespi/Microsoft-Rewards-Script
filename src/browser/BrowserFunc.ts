@@ -22,13 +22,15 @@ export default class BrowserFunc {
      * @returns {DashboardData} Object of user bing rewards dashboard data
      */
     async getDashboardData(): Promise<DashboardData> {
+        const cookies = this.bot.isMobile ? this.bot.cookies.mobile : this.bot.cookies.desktop
+
         try {
             const request: AxiosRequestConfig = {
                 url: 'https://rewards.bing.com/api/getuserinfo?type=1',
                 method: 'GET',
                 headers: {
                     ...(this.bot.fingerprint?.headers ?? {}),
-                    Cookie: this.buildCookieHeader(this.bot.cookies.mobile, [
+                    Cookie: this.buildCookieHeader(cookies, [
                         'bing.com',
                         'live.com',
                         'microsoftonline.com'
@@ -54,7 +56,7 @@ export default class BrowserFunc {
                     method: 'GET',
                     headers: {
                         ...(this.bot.fingerprint?.headers ?? {}),
-                        Cookie: this.buildCookieHeader(this.bot.cookies.mobile),
+                        Cookie: this.buildCookieHeader(cookies),
                         Referer: 'https://rewards.bing.com/',
                         Origin: 'https://rewards.bing.com'
                     }
@@ -73,7 +75,7 @@ export default class BrowserFunc {
 
                     if (typeof dashboardData === 'string' && dashboardData.length > 0) {
                         const snippet = dashboardData.substring(0, 500).replace(/\s+/g, ' ')
-                        this.bot.logger.debug(this.bot.isMobile, 'GET-DASHBOARD-DATA', `HTML Snippet: ${snippet}...`)
+                        this.bot.logger.warn(this.bot.isMobile, 'GET-DASHBOARD-DATA', `HTML Snippet: ${snippet}...`)
                     }
 
                     throw new Error('Dashboard script not found in HTML')

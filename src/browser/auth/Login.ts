@@ -596,7 +596,7 @@ export class Login {
         this.bot.logger.info(this.bot.isMobile, 'LOGIN-BING', 'Verifying Bing session')
 
         try {
-            await page.goto(url, { waitUntil: 'networkidle', timeout: 10000 }).catch(() => { })
+            await page.goto(url, { waitUntil: 'networkidle', timeout: 15000 }).catch(() => { })
 
             for (let i = 0; i < loopMax; i++) {
                 if (page.isClosed()) break
@@ -611,32 +611,51 @@ export class Login {
 
                 const u = new URL(page.url())
                 const atBingHome = u.hostname === 'www.bing.com' && u.pathname === '/'
-                this.bot.logger.debug(
-                    this.bot.isMobile,
-                    'LOGIN-BING',
-                    `At Bing home: ${atBingHome} (${u.hostname}${u.pathname})`
-                )
 
                 if (atBingHome) {
                     await this.bot.browser.utils.tryDismissAllMessages(page).catch(() => { })
 
-                    const signedIn = await page
-                        .waitForSelector(this.selectors.bingProfile, { timeout: 3000 })
-                        .then(() => true)
-                        .catch(() => false)
+                    // Try multiple possible selectors for the profile element (signed in indicators)
+                    const profileSelectors = [
+                        this.selectors.bingProfile, // #id_n
+                        '#id_l',
+                        '#id_s',
+                        '.hp_idp_name',
+                        '#meControl',
+                        '#m_id_n'
+                    ]
 
-                    this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `Profile element found: ${signedIn}`)
+                    let signedIn = false
+                    for (const sel of profileSelectors) {
+                        const visible = await page.locator(sel).isVisible().catch(() => false)
+                        if (visible) {
+                            signedIn = true
+                            this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `Bingo! Found profile via selector: ${sel}`)
+                            break
+                        }
+                    }
 
                     if (signedIn || this.bot.isMobile) {
                         this.bot.logger.info(this.bot.isMobile, 'LOGIN-BING', 'Bing session verified successfully')
                         return
                     }
+
+                    const pageTitle = await page.title().catch(() => 'Unknown Title')
+                    this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `At Bing home but profile not found. Title: ${pageTitle}`)
+                } else {
+                    this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `Not at Bing home: ${u.hostname}${u.pathname}`)
                 }
 
-                await this.bot.utils.wait(1000)
+                await this.bot.utils.wait(1500)
             }
 
-            this.bot.logger.warn(this.bot.isMobile, 'LOGIN-BING', 'Could not verify Bing session, continuing anyway')
+            const currentUrl = page.url()
+            const bodyPreview = await page.evaluate(() => document.body?.innerText?.substring(0, 300).replace(/\s+/g, ' ')).catch(() => 'N/A')
+            this.bot.logger.warn(
+                this.bot.isMobile,
+                'LOGIN-BING',
+                `Could not verify Bing session after ${loopMax} attempts. URL: ${currentUrl} | PageText: ${bodyPreview}`
+            )
         } catch (error) {
             this.bot.logger.warn(
                 this.bot.isMobile,
@@ -653,7 +672,7 @@ export class Login {
 
         try {
             await page
-                .goto(`${this.bot.config.baseURL}?_=${Date.now()}`, { waitUntil: 'networkidle', timeout: 10000 })
+                .goto(`${this.bot.config.baseURL}?_=${Date.now()}`, { waitUntil: 'networkidle', timeout: 15000 })
                 .catch(() => { })
 
             for (let i = 0; i < loopMax; i++) {
@@ -685,7 +704,8 @@ export class Login {
                         return
                     }
 
-                    this.bot.logger.debug(this.bot.isMobile, 'GET-REWARD-SESSION', 'Token not found on page')
+                    const pageTitle = await page.title().catch(() => 'Unknown Title')
+                    this.bot.logger.debug(this.bot.isMobile, 'GET-REWARD-SESSION', `Token not found on page. Title: ${pageTitle}`)
                 } else {
                     this.bot.logger.debug(
                         this.bot.isMobile,
@@ -694,13 +714,15 @@ export class Login {
                     )
                 }
 
-                await this.bot.utils.wait(1000)
+                await this.bot.utils.wait(1500)
             }
 
+            const currentUrl = page.url()
+            const bodyPreview = await page.evaluate(() => document.body?.innerText?.substring(0, 300).replace(/\s+/g, ' ')).catch(() => 'N/A')
             this.bot.logger.warn(
                 this.bot.isMobile,
                 'GET-REWARD-SESSION',
-                'No RequestVerificationToken found, some activities may not work'
+                `No RequestVerificationToken found after ${loopMax} attempts. URL: ${currentUrl} | PageText: ${bodyPreview}`
             )
         } catch (error) {
             throw this.bot.logger.error(

@@ -202,10 +202,12 @@ export class MobileAccessLogin {
                 }
 
                 if (Date.now() - start > 30000 && (Date.now() - start) % 30000 < 1000) {
-                    this.bot.logger.debug(
+                    const pageTitle = await this.page.title().catch(() => 'Unknown Title')
+                    const bodyText = await this.page.evaluate(() => document.body?.innerText?.substring(0, 300).replace(/\s+/g, ' ')).catch(() => '')
+                    this.bot.logger.warn(
                         this.bot.isMobile,
                         'LOGIN-APP',
-                        `Still waiting for OAuth code (elapsed: ${Math.round((Date.now() - start) / 1000)}s). URL: ${currentUrl}`
+                        `Still waiting for OAuth code (elapsed: ${Math.round((Date.now() - start) / 1000)}s). URL: ${currentUrl} | Title: ${pageTitle} | BodyText: ${bodyText}`
                     )
                 }
 
