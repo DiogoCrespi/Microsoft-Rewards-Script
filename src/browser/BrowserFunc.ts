@@ -23,6 +23,7 @@ export default class BrowserFunc {
      */
     async getDashboardData(): Promise<DashboardData> {
         const cookies = this.bot.isMobile ? this.bot.cookies.mobile : this.bot.cookies.desktop
+        const mobileCookies = this.bot.cookies.mobile
 
         try {
             const request: AxiosRequestConfig = {
@@ -47,16 +48,45 @@ export default class BrowserFunc {
             }
             throw new Error('Dashboard data missing from API response')
         } catch (error) {
+            // If desktop cookies failed, try with mobile cookies as fallback (mobile always completes the OIDC chain)
+            if (!this.bot.isMobile && mobileCookies.length > 0) {
+                try {
+                    this.bot.logger.debug(false, 'GET-DASHBOARD-DATA', 'Desktop API failed, retrying with mobile cookies')
+                    const fallbackRequest: AxiosRequestConfig = {
+                        url: 'https://rewards.bing.com/api/getuserinfo?type=1',
+                        method: 'GET',
+                        headers: {
+                            ...(this.bot.fingerprint?.headers ?? {}),
+                            Cookie: this.buildCookieHeader(mobileCookies, [
+                                'bing.com',
+                                'live.com',
+                                'microsoftonline.com'
+                            ]),
+                            Referer: 'https://rewards.bing.com/',
+                            Origin: 'https://rewards.bing.com'
+                        }
+                    }
+                    const fallbackResponse = await this.bot.axios.request(fallbackRequest)
+                    if (fallbackResponse.data?.dashboard) {
+                        this.bot.logger.debug(false, 'GET-DASHBOARD-DATA', 'Mobile cookie fallback succeeded for desktop session')
+                        return fallbackResponse.data.dashboard as DashboardData
+                    }
+                } catch {
+                    // Mobile cookie fallback also failed, continue to HTML fallback
+                }
+            }
+
             this.bot.logger.warn(this.bot.isMobile, 'GET-DASHBOARD-DATA', 'API failed, trying HTML fallback')
 
             // Try using script from dashboard page
+            const htmlCookies = !this.bot.isMobile && mobileCookies.length > 0 ? mobileCookies : cookies
             try {
                 const request: AxiosRequestConfig = {
                     url: this.bot.config.baseURL,
                     method: 'GET',
                     headers: {
                         ...(this.bot.fingerprint?.headers ?? {}),
-                        Cookie: this.buildCookieHeader(cookies),
+                        Cookie: this.buildCookieHeader(htmlCookies),
                         Referer: 'https://rewards.bing.com/',
                         Origin: 'https://rewards.bing.com'
                     }
