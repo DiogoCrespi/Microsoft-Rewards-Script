@@ -34,7 +34,7 @@ class Browser {
         '--no-default-browser-check',
         '--disable-user-media-security=true',
         '--disable-blink-features=Attestation',
-        '--disable-features=WebAuthentication,PasswordManagerOnboarding,PasswordManager,EnablePasswordsAccountStorage,Passkeys',
+        '--disable-features=WebAuthentication,PasswordManagerOnboarding,PasswordManager,EnablePasswordsAccountStorage,Passkeys,IsolateOrigins,site-per-process',
         '--disable-save-password-bubble'
     ] as const
 
