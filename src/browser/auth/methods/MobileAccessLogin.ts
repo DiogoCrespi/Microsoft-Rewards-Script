@@ -3,6 +3,8 @@ import { randomBytes } from 'crypto'
 import { URLSearchParams } from 'url'
 
 import type { MicrosoftRewardsBot } from '../../../index'
+import { getCurrentContext } from '../../../index'
+import { EmailLogin } from './EmailLogin'
 
 export class MobileAccessLogin {
     private clientId = '0000000040170455'
@@ -16,13 +18,20 @@ export class MobileAccessLogin {
     private readonly selectors = {
         secondaryButton: 'button[data-testid="secondaryButton"]',
         passKeyError: '[data-testid="registrationImg"]',
-        passKeyVideo: '[data-testid="biometricVideo"]'
+        passKeyVideo: '[data-testid="biometricVideo"]',
+        numberDisplay: 'div[data-testid="displaySign"]'
     } as const
+
+    private numberDisplayed = false
+    private clickedPasswordFallback = false
+    private emailLogin: EmailLogin
 
     constructor(
         private bot: MicrosoftRewardsBot,
         private page: Page
-    ) {}
+    ) {
+        this.emailLogin = new EmailLogin(this.bot)
+    }
 
     private async checkSelector(selector: string): Promise<boolean> {
         return this.page
@@ -39,7 +48,7 @@ export class MobileAccessLogin {
             if (hasPasskeyError || hasPasskeyVideo) {
                 this.bot.logger.info(this.bot.isMobile, 'LOGIN-APP', 'Found Passkey prompt on OAuth page, skipping')
                 await this.bot.browser.utils.ghostClick(this.page, this.selectors.secondaryButton)
-                await this.page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {})
+                await this.page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => { })
             }
         } catch {
             // Ignore errors in prompt handling
@@ -80,6 +89,8 @@ export class MobileAccessLogin {
             const start = Date.now()
             let code = ''
             let lastUrl = ''
+            this.numberDisplayed = false
+            this.clickedPasswordFallback = false
 
             while (Date.now() - start < this.maxTimeout) {
                 const currentUrl = this.page.url()
@@ -116,6 +127,72 @@ export class MobileAccessLogin {
 
                     // Handle Passkey prompt if it appears
                     await this.handlePasskeyPrompt()
+
+                    // Check for alternative sign-in options (Use your password)
+                    if (!this.clickedPasswordFallback) {
+                        const passwordOption = await this.page
+                            .getByText('Use my password', { exact: true })
+                            .or(this.page.getByText('Use your password', { exact: true }))
+                            .or(this.page.locator('[data-testid="tile"]:has(svg path[d*="M11.78 10.22a.75.75"])'))
+                            .first()
+
+                        if (await passwordOption.isVisible().catch(() => false)) {
+                            this.bot.logger.info(
+                                this.bot.isMobile,
+                                'LOGIN-APP',
+                                'Alternative password option detected, switching...'
+                            )
+                            await passwordOption.click()
+                            this.clickedPasswordFallback = true
+                            await this.bot.utils.wait(2000)
+                            continue // Skip number display logic on this loop after clicking
+                        }
+                    }
+
+                    // Check if password entry is visible and enter password
+                    if (this.clickedPasswordFallback) {
+                        const passwordInput = await this.page.$('input[type="password"]').catch(() => null)
+                        if (passwordInput && await passwordInput.isVisible()) {
+                            this.bot.logger.info(
+                                this.bot.isMobile,
+                                'LOGIN-APP',
+                                'Password input visible, authenticating...'
+                            )
+
+                            // Reuse EmailLogin for entering password since it handles typing and submitting
+                            // We need to fetch the account password from the current context
+                            const { account } = getCurrentContext()
+                            if (account && account.password) {
+                                await this.emailLogin.enterPassword(this.page, account.password)
+                                await this.page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => { })
+                                this.clickedPasswordFallback = false // Reset after typing
+                                continue
+                            } else {
+                                this.bot.logger.warn(this.bot.isMobile, 'LOGIN-APP', 'Password for account not found')
+                            }
+                        }
+                    }
+
+                    if (!this.numberDisplayed && !this.clickedPasswordFallback) {
+                        const numberElement = await this.page.$(this.selectors.numberDisplay).catch(() => null)
+                        if (numberElement) {
+                            const number = await numberElement.textContent().catch(() => null)
+                            if (number && number.trim()) {
+                                const cleanNumber = number.trim()
+                                console.log('\n' + '='.repeat(60))
+                                console.log('🔢 NÚMERO PARA SELECIONAR NO APP (Mobile Auth): ' + cleanNumber)
+                                console.log('⏱️  Aguardando aprovação no celular...')
+                                console.log('='.repeat(60) + '\n')
+
+                                this.bot.logger.info(
+                                    this.bot.isMobile,
+                                    'LOGIN-APP',
+                                    `Please approve login and select number: ${cleanNumber}`
+                                )
+                                this.numberDisplayed = true
+                            }
+                        }
+                    }
                 } catch (err) {
                     this.bot.logger.debug(
                         this.bot.isMobile,
@@ -177,7 +254,7 @@ export class MobileAccessLogin {
             return ''
         } finally {
             this.bot.logger.debug(this.bot.isMobile, 'LOGIN-APP', 'Returning to base URL')
-            await this.page.goto(this.bot.config.baseURL, { timeout: 10000 }).catch(() => {})
+            await this.page.goto(this.bot.config.baseURL, { timeout: 10000 }).catch(() => { })
         }
     }
 }
