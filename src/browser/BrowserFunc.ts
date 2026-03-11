@@ -61,16 +61,32 @@ export default class BrowserFunc {
                 }
 
                 const response = await this.bot.axios.request(request)
-                const match = response.data.match(/var\s+dashboard\s*=\s*({.*?});/s)
+                const dashboardData = response.data
+                const match = typeof dashboardData === 'string' ? dashboardData.match(/var\s+dashboard\s*=\s*({.*?});/s) : null
 
                 if (!match?.[1]) {
+                    this.bot.logger.warn(
+                        this.bot.isMobile,
+                        'GET-DASHBOARD-DATA',
+                        `Dashboard script NOT found in HTML. Status: ${response.status}. Length: ${typeof dashboardData === 'string' ? dashboardData.length : 'N/A'}`
+                    )
+
+                    if (typeof dashboardData === 'string' && dashboardData.length > 0) {
+                        const snippet = dashboardData.substring(0, 500).replace(/\s+/g, ' ')
+                        this.bot.logger.debug(this.bot.isMobile, 'GET-DASHBOARD-DATA', `HTML Snippet: ${snippet}...`)
+                    }
+
                     throw new Error('Dashboard script not found in HTML')
                 }
 
                 return JSON.parse(match[1]) as DashboardData
             } catch (fallbackError) {
                 // If both fail
-                this.bot.logger.error(this.bot.isMobile, 'GET-DASHBOARD-DATA', 'Failed to get dashboard data')
+                this.bot.logger.error(
+                    this.bot.isMobile,
+                    'GET-DASHBOARD-DATA',
+                    `Failed to get dashboard data: ${fallbackError instanceof Error ? fallbackError.message : String(fallbackError)}`
+                )
                 throw fallbackError
             }
         }

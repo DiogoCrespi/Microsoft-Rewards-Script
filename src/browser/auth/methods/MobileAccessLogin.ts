@@ -131,8 +131,8 @@ export class MobileAccessLogin {
                     // Check for alternative sign-in options (Use your password)
                     if (!this.clickedPasswordFallback) {
                         const passwordOption = await this.page
-                            .getByText('Use my password', { exact: true })
-                            .or(this.page.getByText('Use your password', { exact: true }))
+                            .getByText(/Use my password/i)
+                            .or(this.page.getByText(/Use your password/i))
                             .or(this.page.locator('[data-testid="tile"]:has(svg path[d*="M11.78 10.22a.75.75"])'))
                             .first()
 
@@ -142,7 +142,7 @@ export class MobileAccessLogin {
                                 'LOGIN-APP',
                                 'Alternative password option detected, switching...'
                             )
-                            await passwordOption.click()
+                            await passwordOption.click({ force: true })
                             this.clickedPasswordFallback = true
                             await this.bot.utils.wait(2000)
                             continue // Skip number display logic on this loop after clicking
@@ -198,6 +198,14 @@ export class MobileAccessLogin {
                         this.bot.isMobile,
                         'LOGIN-APP',
                         `Invalid URL while polling: ${String(currentUrl)}`
+                    )
+                }
+
+                if (Date.now() - start > 30000 && (Date.now() - start) % 30000 < 1000) {
+                    this.bot.logger.debug(
+                        this.bot.isMobile,
+                        'LOGIN-APP',
+                        `Still waiting for OAuth code (elapsed: ${Math.round((Date.now() - start) / 1000)}s). URL: ${currentUrl}`
                     )
                 }
 
