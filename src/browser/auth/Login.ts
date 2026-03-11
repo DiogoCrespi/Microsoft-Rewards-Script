@@ -565,7 +565,11 @@ export class Login {
     private async finalizeLogin(page: Page, email: string) {
         this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Finalizing login')
 
-        await page.goto(this.bot.config.baseURL, { waitUntil: 'networkidle', timeout: 10000 }).catch(() => { })
+        // First, visit Bing to ensure the session is picked up
+        await page.goto('https://www.bing.com', { waitUntil: 'networkidle', timeout: 15000 }).catch(() => { })
+        await this.bot.utils.wait(2000)
+
+        await page.goto(this.bot.config.baseURL, { waitUntil: 'networkidle', timeout: 15000 }).catch(() => { })
 
         const loginRewardsSuccess = new URL(page.url()).hostname === 'rewards.bing.com'
         if (loginRewardsSuccess) {

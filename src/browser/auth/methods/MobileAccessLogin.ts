@@ -128,7 +128,24 @@ export class MobileAccessLogin {
                     // Handle Passkey prompt if it appears
                     await this.handlePasskeyPrompt()
 
-                    // Check for alternative sign-in options (Use your password)
+                    // Handle "Get a code" or other MFA interrupts
+                    const pageTitle = await this.page.title().catch(() => '')
+                    if (pageTitle.includes('Get a code') || pageTitle.includes('outra maneira')) {
+                        const otherWays = await this.page
+                            .locator('[data-testid="viewFooter"] span[role="button"]')
+                            .or(this.page.getByText(/Other ways to sign in/i))
+                            .or(this.page.getByText(/Outras formas de entrar/i))
+                            .first()
+
+                        if (await otherWays.isVisible().catch(() => false)) {
+                            this.bot.logger.info(this.bot.isMobile, 'LOGIN-APP', 'MFA prompt detected ("Get a code"), trying to switch to password...')
+                            await otherWays.click({ force: true })
+                            await this.bot.utils.wait(2000)
+                            continue
+                        }
+                    }
+
+                    // Handle alternative sign-in options on the picker page
                     if (!this.clickedPasswordFallback) {
                         const passwordOption = await this.page
                             .getByText(/Use my password/i)

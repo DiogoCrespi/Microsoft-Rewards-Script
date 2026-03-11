@@ -64,6 +64,12 @@ export default class BrowserFunc {
 
                 const response = await this.bot.axios.request(request)
                 const dashboardData = response.data
+
+                if (typeof dashboardData === 'string' && dashboardData.includes('rewards-user-suspended-error')) {
+                    this.bot.logger.error(this.bot.isMobile, 'GET-DASHBOARD-DATA', 'Account is SUSPENDED')
+                    throw new Error('Account suspended')
+                }
+
                 const match = typeof dashboardData === 'string' ? dashboardData.match(/var\s+dashboard\s*=\s*({.*?});/s) : null
 
                 if (!match?.[1]) {
@@ -83,6 +89,9 @@ export default class BrowserFunc {
 
                 return JSON.parse(match[1]) as DashboardData
             } catch (fallbackError) {
+                if (fallbackError instanceof Error && fallbackError.message === 'Account suspended') {
+                    throw fallbackError
+                }
                 // If both fail
                 this.bot.logger.error(
                     this.bot.isMobile,
