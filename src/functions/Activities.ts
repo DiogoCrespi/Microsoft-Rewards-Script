@@ -64,9 +64,9 @@ export default class Activities {
     */
 
     // API Activities
-    doUrlReward = async (promotion: BasePromotion, page?: Page): Promise<void> => {
+    doUrlReward = async (promotion: BasePromotion): Promise<void> => {
         const urlReward = new UrlReward(this.bot)
-        await urlReward.doUrlReward(promotion, page)
+        await urlReward.doUrlReward(promotion)
     }
 
     doQuiz = async (promotion: BasePromotion): Promise<void> => {

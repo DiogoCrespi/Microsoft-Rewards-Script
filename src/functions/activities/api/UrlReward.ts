@@ -1,4 +1,3 @@
-import type { Page } from 'patchright'
 import type { AxiosRequestConfig } from 'axios'
 import type { BasePromotion } from '../../../interface/DashboardData'
 import { Workers } from '../../Workers'
@@ -12,7 +11,7 @@ export class UrlReward extends Workers {
 
     private oldBalance: number = this.bot.userData.currentPoints
 
-    public async doUrlReward(promotion: BasePromotion, page?: Page) {
+    public async doUrlReward(promotion: BasePromotion) {
         if (!this.bot.requestToken) {
             this.bot.logger.warn(
                 this.bot.isMobile,
@@ -113,41 +112,8 @@ export class UrlReward extends Workers {
                 this.bot.logger.warn(
                     this.bot.isMobile,
                     'URL-REWARD',
-                    `Failed UrlReward with no points via API | offerId=${offerId} | status=${response.status} | oldBalance=${this.oldBalance} | newBalance=${newBalance}`
+                    `Failed UrlReward with no points | offerId=${offerId} | status=${response.status} | oldBalance=${this.oldBalance} | newBalance=${newBalance}`
                 )
-
-                // Browser Fallback
-                if (page) {
-                    this.bot.logger.info(
-                        this.bot.isMobile,
-                        'URL-REWARD',
-                        `Starting browser fallback | offerId=${offerId} | url=${promotion.destinationUrl}`
-                    )
-
-                    await page.goto(promotion.destinationUrl, { waitUntil: 'networkidle', timeout: 15000 }).catch(() => { })
-                    await this.bot.utils.wait(this.bot.utils.randomDelay(3000, 5000))
-
-                    const finalBalance = await this.bot.browser.func.getCurrentPoints()
-                    this.gainedPoints = finalBalance - this.oldBalance
-
-                    if (this.gainedPoints > 0) {
-                        this.bot.userData.currentPoints = finalBalance
-                        this.bot.userData.gainedPoints = (this.bot.userData.gainedPoints ?? 0) + this.gainedPoints
-
-                        this.bot.logger.info(
-                            this.bot.isMobile,
-                            'URL-REWARD',
-                            `Completed UrlReward (Browser Fallback) | offerId=${offerId} | gainedPoints=${this.gainedPoints} | newBalance=${finalBalance}`,
-                            'green'
-                        )
-                    } else {
-                        this.bot.logger.warn(
-                            this.bot.isMobile,
-                            'URL-REWARD',
-                            `Failed UrlReward even with browser fallback | offerId=${offerId} | oldBalance=${this.oldBalance} | finalBalance=${finalBalance}`
-                        )
-                    }
-                }
             }
 
             this.bot.logger.debug(this.bot.isMobile, 'URL-REWARD', `Waiting after UrlReward | offerId=${offerId}`)
