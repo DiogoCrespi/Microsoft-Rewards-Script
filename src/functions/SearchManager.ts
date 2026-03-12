@@ -367,13 +367,7 @@ export class SearchManager {
         )
 
         const session = await this.bot['browserFactory'].createBrowser(account)
-        this.bot.logger.debug('main', 'SEARCH-DESKTOP-LOGIN', 'Browser created, pre-seeding context')
-
-        // Pre-inject mobile cookies into desktop context to skip login if possible (SSO)
-        if (this.bot.cookies.mobile && this.bot.cookies.mobile.length > 0) {
-            this.bot.logger.debug('main', 'SEARCH-DESKTOP-LOGIN', `Pre-injecting ${this.bot.cookies.mobile.length} mobile cookies into desktop session`)
-            await session.context.addCookies(this.bot.cookies.mobile)
-        }
+        this.bot.logger.debug('main', 'SEARCH-DESKTOP-LOGIN', 'Browser created, new page')
 
         this.bot.mainDesktopPage = await session.context.newPage()
 

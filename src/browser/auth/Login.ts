@@ -45,7 +45,6 @@ export class Login {
         emailIconOld: 'img[data-testid="accessibleImg"][src*="picker_verify_email"]',
         recoveryEmail: '[data-testid="proof-confirmation"]',
         passwordIcon: '[data-testid="tile"]:has(svg path[d*="M11.78 10.22a.75.75"])',
-        passwordText: 'span:text-is("Use your password")',
         accountLocked: '#serviceAbuseLandingTitle',
         errorAlert: 'div[role="alert"]',
         passwordEntry: '[data-testid="passwordEntry"]',
@@ -79,7 +78,11 @@ export class Login {
         try {
             this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Starting login process')
 
-            await page.goto('https://www.bing.com/rewards/dashboard', { waitUntil: 'domcontentloaded' }).catch(() => { })
+            await page
+                .goto('https://rewards.bing.com/createuser?idru=%2F&userScenarioId=anonsignin', {
+                    waitUntil: 'domcontentloaded'
+                })
+                .catch(() => {})
             await this.bot.utils.wait(2000)
             await this.bot.browser.utils.reloadBadPage(page)
             await this.bot.browser.utils.disableFido(page)
@@ -155,7 +158,7 @@ export class Login {
     }
 
     private async detectCurrentState(page: Page, account?: Account): Promise<LoginState> {
-        await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => { })
+        await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {})
 
         const url = new URL(page.url())
         this.bot.logger.debug(this.bot.isMobile, 'DETECT-STATE', `Current URL: ${url.hostname}${url.pathname}`)
@@ -185,7 +188,6 @@ export class Login {
             [this.selectors.passKeyVideo, 'PASSKEY_VIDEO'],
             [this.selectors.passKeyError, 'PASSKEY_ERROR'],
             [this.selectors.passwordIcon, 'SIGN_IN_ANOTHER_WAY'],
-            [this.selectors.passwordText, 'SIGN_IN_ANOTHER_WAY'],
             [this.selectors.emailIcon, 'SIGN_IN_ANOTHER_WAY_EMAIL'],
             [this.selectors.emailIconOld, 'SIGN_IN_ANOTHER_WAY_EMAIL'],
             [this.selectors.passwordlessCheck, 'LOGIN_PASSWORDLESS'],
@@ -437,7 +439,7 @@ export class Login {
                             waitUntil: 'domcontentloaded',
                             timeout: 10000
                         })
-                        .catch(() => { })
+                        .catch(() => {})
                     await this.bot.utils.wait(3000)
                     this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Recovery navigation successful')
                     return true
@@ -448,7 +450,7 @@ export class Login {
                             waitUntil: 'domcontentloaded',
                             timeout: 10000
                         })
-                        .catch(() => { })
+                        .catch(() => {})
                     await this.bot.utils.wait(3000)
                     this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Fallback navigation successful')
                     return true
@@ -464,14 +466,7 @@ export class Login {
 
             case 'SIGN_IN_ANOTHER_WAY': {
                 this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Selecting "Use my password"')
-
-                const passwordTextVisible = await this.checkSelector(page, this.selectors.passwordText)
-                if (passwordTextVisible) {
-                    await this.bot.browser.utils.ghostClick(page, this.selectors.passwordText)
-                } else {
-                    await this.bot.browser.utils.ghostClick(page, this.selectors.passwordIcon)
-                }
-
+                await this.bot.browser.utils.ghostClick(page, this.selectors.passwordIcon)
                 await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {
                     this.bot.logger.debug(this.bot.isMobile, 'LOGIN', 'Network idle timeout after password icon click')
                 })
@@ -565,28 +560,14 @@ export class Login {
     private async finalizeLogin(page: Page, email: string) {
         this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Finalizing login')
 
-        // Navigate to rewards to complete any pending OIDC redirect form (auto-submitted by browser)
-        await page.goto(this.bot.config.baseURL, { waitUntil: 'networkidle', timeout: 20000 }).catch(() => { })
+        await page.goto(this.bot.config.baseURL, { waitUntil: 'networkidle', timeout: 10000 }).catch(() => {})
 
-        const finalUrl = new URL(page.url())
-        const loginRewardsSuccess = finalUrl.hostname === 'rewards.bing.com' && finalUrl.pathname === '/'
+        const loginRewardsSuccess = new URL(page.url()).hostname === 'rewards.bing.com'
         if (loginRewardsSuccess) {
             this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Logged into Microsoft Rewards successfully')
         } else {
-            this.bot.logger.warn(
-                this.bot.isMobile,
-                'LOGIN',
-                `Rewards page did not load cleanly. URL: ${page.url()}`
-            )
+            this.bot.logger.warn(this.bot.isMobile, 'LOGIN', 'Could not verify Rewards Dashboard, assuming login valid')
         }
-
-        // Visit bing.com so the browser picks up/synchronizes SSO cookies across domains
-        await page.goto('https://www.bing.com', { waitUntil: 'networkidle', timeout: 15000 }).catch(() => { })
-        await this.bot.utils.wait(2000)
-
-        // Go back to rewards to synchronize the session fully (handles the OIDC redirect chain)
-        await page.goto(this.bot.config.baseURL, { waitUntil: 'networkidle', timeout: 15000 }).catch(() => { })
-        await this.bot.utils.wait(1000)
 
         this.bot.logger.info(this.bot.isMobile, 'LOGIN', 'Starting Bing session verification')
         await this.verifyBingSession(page)
@@ -603,85 +584,54 @@ export class Login {
     }
 
     async verifyBingSession(page: Page) {
+        const url =
+            'https://www.bing.com/fd/auth/signin?action=interactive&provider=windows_live_id&return_url=https%3A%2F%2Fwww.bing.com%2F'
+        const loopMax = 5
+
         this.bot.logger.info(this.bot.isMobile, 'LOGIN-BING', 'Verifying Bing session')
 
         try {
-            // Navigate directly to bing.com (not the auth URL) to check if we're already signed in
-            await page.goto('https://www.bing.com', { waitUntil: 'networkidle', timeout: 15000 }).catch(() => { })
-            await this.bot.utils.wait(1500)
+            await page.goto(url, { waitUntil: 'networkidle', timeout: 10000 }).catch(() => {})
 
-            const loopMax = 5
             for (let i = 0; i < loopMax; i++) {
                 if (page.isClosed()) break
 
-                const u = new URL(page.url())
-                const atBingHome = u.hostname === 'www.bing.com'
+                this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `Verification loop ${i + 1}/${loopMax}`)
 
-                this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `Loop ${i + 1}/${loopMax} | url=${page.url().substring(0, 80)}`)
+                const state = await this.detectCurrentState(page)
+                if (state === 'PASSKEY_ERROR') {
+                    this.bot.logger.info(this.bot.isMobile, 'LOGIN-BING', 'Dismissing Passkey error state')
+                    await this.bot.browser.utils.ghostClick(page, this.selectors.secondaryButton)
+                }
+
+                const u = new URL(page.url())
+                const atBingHome = u.hostname === 'www.bing.com' && u.pathname === '/'
+                this.bot.logger.debug(
+                    this.bot.isMobile,
+                    'LOGIN-BING',
+                    `At Bing home: ${atBingHome} (${u.hostname}${u.pathname})`
+                )
 
                 if (atBingHome) {
-                    await this.bot.browser.utils.tryDismissAllMessages(page).catch(() => { })
+                    await this.bot.browser.utils.tryDismissAllMessages(page).catch(() => {})
 
-                    const profileSelectors = [
-                        this.selectors.bingProfile, // #id_n
-                        '#id_l',
-                        '#id_s',
-                        '.hp_idp_name',
-                        '#meControl',
-                        '#m_id_n'
-                    ]
+                    const signedIn = await page
+                        .waitForSelector(this.selectors.bingProfile, { timeout: 3000 })
+                        .then(() => true)
+                        .catch(() => false)
 
-                    let signedIn = false
-                    for (const sel of profileSelectors) {
-                        const visible = await page.locator(sel).isVisible().catch(() => false)
-                        if (visible) {
-                            signedIn = true
-                            this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `Profile found via: ${sel}`)
-                            break
-                        }
-                    }
+                    this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `Profile element found: ${signedIn}`)
 
                     if (signedIn || this.bot.isMobile) {
                         this.bot.logger.info(this.bot.isMobile, 'LOGIN-BING', 'Bing session verified successfully')
                         return
                     }
-
-                    // Not signed in on bing.com yet — try the SSO trigger URL once
-                    if (i === 0) {
-                        this.bot.logger.info(this.bot.isMobile, 'LOGIN-BING', 'Bing home loaded but not signed in, triggering SSO...')
-                        const ssoUrl = 'https://www.bing.com/fd/auth/signin?action=interactive&provider=windows_live_id&return_url=https%3A%2F%2Fwww.bing.com%2F'
-                        await page.goto(ssoUrl, { waitUntil: 'networkidle', timeout: 15000 }).catch(() => { })
-                        await this.bot.utils.wait(2000)
-
-                        // If SSO redirected back to bing.com, great — otherwise go back manually
-                        const afterSso = new URL(page.url())
-                        if (afterSso.hostname !== 'www.bing.com') {
-                            this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `SSO redirect didn't land on bing.com (${afterSso.hostname}), navigating back`)
-                            await page.goto('https://www.bing.com', { waitUntil: 'networkidle', timeout: 10000 }).catch(() => { })
-                            await this.bot.utils.wait(1000)
-                        }
-                        continue
-                    }
-
-                    const pageTitle = await page.title().catch(() => 'Unknown')
-                    this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `At bing.com but not signed in. Title: ${pageTitle}`)
-                } else {
-                    // Not on bing.com — wait and re-check
-                    this.bot.logger.debug(this.bot.isMobile, 'LOGIN-BING', `Not on bing.com, waiting... hostname=${u.hostname}`)
-                    await this.bot.utils.wait(1500)
-                    continue
                 }
 
-                await this.bot.utils.wait(1500)
+                await this.bot.utils.wait(1000)
             }
 
-            const currentUrl = page.url()
-            const bodyPreview = await page.evaluate(() => document.body?.innerText?.substring(0, 200).replace(/\s+/g, ' ')).catch(() => 'N/A')
-            this.bot.logger.warn(
-                this.bot.isMobile,
-                'LOGIN-BING',
-                `Could not verify Bing session after ${loopMax} attempts. URL: ${currentUrl} | PageText: ${bodyPreview}`
-            )
+            this.bot.logger.warn(this.bot.isMobile, 'LOGIN-BING', 'Could not verify Bing session, continuing anyway')
         } catch (error) {
             this.bot.logger.warn(
                 this.bot.isMobile,
@@ -698,8 +648,8 @@ export class Login {
 
         try {
             await page
-                .goto(`${this.bot.config.baseURL}?_=${Date.now()}`, { waitUntil: 'networkidle', timeout: 15000 })
-                .catch(() => { })
+                .goto(`${this.bot.config.baseURL}?_=${Date.now()}`, { waitUntil: 'networkidle', timeout: 10000 })
+                .catch(() => {})
 
             for (let i = 0; i < loopMax; i++) {
                 if (page.isClosed()) break
@@ -708,30 +658,31 @@ export class Login {
 
                 const u = new URL(page.url())
                 const atRewardHome = u.hostname === 'rewards.bing.com' && u.pathname === '/'
-                const atWelcome = u.hostname === 'rewards.bing.com' && u.pathname === '/welcome'
-
-                if (atWelcome) {
-                    this.bot.logger.info(this.bot.isMobile, 'GET-REWARD-SESSION', 'At Rewards welcome page, forcing sign-in...')
-                    const signInButton = await page
-                        .getByText(/Sign in/i)
-                        .or(page.locator('#login-button'))
-                        .or(page.locator('a[href*="signin"]'))
-                        .first()
-
-                    if (await signInButton.isVisible().catch(() => false)) {
-                        await signInButton.click({ force: true })
-                        // Wait specifically for OIDC or Bing redirect with longer timeout
-                        await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => { })
-                        await this.bot.utils.wait(3000)
-                        continue
-                    }
-                }
 
                 if (atRewardHome) {
                     await this.bot.browser.utils.tryDismissAllMessages(page)
 
                     const html = await page.content()
                     const $ = await this.bot.browser.utils.loadInCheerio(html)
+
+                    // Check which version of the dashboard is being used, disable requestToken req on new dash
+                    const isModernDashboard = $('section#dailyset').length > 0 // Only on new UI and on dashboard/overview page
+
+                    if (isModernDashboard) {
+                        this.bot.rewardsVersion = 'modern'
+
+                        this.bot.logger.warn(
+                            this.bot.isMobile,
+                            'GET-REWARD-SESSION',
+                            'Modern Rewards dashboard detected. This script version may not fully support it.'
+                        )
+
+                        this.bot.logger.warn(
+                            this.bot.isMobile,
+                            'GET-REWARD-SESSION',
+                            'RequestToken disabled for this session (expected behavior).'
+                        )
+                    }
 
                     const token =
                         $(this.selectors.requestToken).attr('value') ??
@@ -748,8 +699,7 @@ export class Login {
                         return
                     }
 
-                    const pageTitle = await page.title().catch(() => 'Unknown Title')
-                    this.bot.logger.debug(this.bot.isMobile, 'GET-REWARD-SESSION', `Token not found on page. Title: ${pageTitle}`)
+                    this.bot.logger.debug(this.bot.isMobile, 'GET-REWARD-SESSION', 'Token not found on page')
                 } else {
                     this.bot.logger.debug(
                         this.bot.isMobile,
@@ -758,15 +708,13 @@ export class Login {
                     )
                 }
 
-                await this.bot.utils.wait(1500)
+                await this.bot.utils.wait(1000)
             }
 
-            const currentUrl = page.url()
-            const bodyPreview = await page.evaluate(() => document.body?.innerText?.substring(0, 300).replace(/\s+/g, ' ')).catch(() => 'N/A')
             this.bot.logger.warn(
                 this.bot.isMobile,
                 'GET-REWARD-SESSION',
-                `No RequestVerificationToken found after ${loopMax} attempts. URL: ${currentUrl} | PageText: ${bodyPreview}`
+                'No RequestVerificationToken found, some activities may not work'
             )
         } catch (error) {
             throw this.bot.logger.error(

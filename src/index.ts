@@ -83,6 +83,7 @@ export class MicrosoftRewardsBot {
 
     public accessToken = ''
     public requestToken = ''
+    public rewardsVersion: 'modern' | 'classic' = 'classic'
     public cookies: { mobile: Cookie[]; desktop: Cookie[] }
     public fingerprint!: BrowserFingerprintWithHeaders
 

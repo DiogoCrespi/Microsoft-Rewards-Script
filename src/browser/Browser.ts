@@ -32,9 +32,10 @@ class Browser {
         '--ignore-ssl-errors',
         '--no-first-run',
         '--no-default-browser-check',
-        '--disable-user-media-security=true',
+        '--disable-web-authentication-ui',
+        '--disable-external-intent-requests',
         '--disable-blink-features=Attestation',
-        '--disable-features=WebAuthentication,PasswordManagerOnboarding,PasswordManager,EnablePasswordsAccountStorage,Passkeys,IsolateOrigins,site-per-process',
+        '--disable-features=WebAuthentication,PasswordManagerOnboarding,PasswordManager,EnablePasswordsAccountStorage,Passkeys,WebAuthenticationProxy,U2F',
         '--disable-save-password-bubble'
     ] as const
 
@@ -47,13 +48,13 @@ class Browser {
         try {
             const proxyConfig = account.proxy.url
                 ? {
-                    server: this.formatProxyServer(account.proxy),
-                    ...(account.proxy.username &&
-                        account.proxy.password && {
-                        username: account.proxy.username,
-                        password: account.proxy.password
-                    })
-                }
+                      server: this.formatProxyServer(account.proxy),
+                      ...(account.proxy.username &&
+                          account.proxy.password && {
+                              username: account.proxy.username,
+                              password: account.proxy.password
+                          })
+                  }
                 : undefined
 
             browser = await rebrowser.chromium.launch({
@@ -77,7 +78,13 @@ class Browser {
 
             const fingerprint = sessionData.fingerprint ?? (await this.generateFingerprint(this.bot.isMobile))
 
-            const context = await newInjectedContext(browser as any, { fingerprint })
+            const context = await newInjectedContext(browser as any, {
+                fingerprint,
+                newContextOptions: {
+                    permissions: [],
+                    ignoreHTTPSErrors: true
+                }
+            })
 
             await context.addInitScript(() => {
                 Object.defineProperty(navigator, 'credentials', {
@@ -108,7 +115,7 @@ class Browser {
 
             return { context: context as unknown as BrowserContext, fingerprint }
         } catch (error) {
-            await browser.close().catch(() => { })
+            await browser.close().catch(() => {})
             throw error
         }
     }
