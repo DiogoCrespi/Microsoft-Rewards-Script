@@ -708,6 +708,23 @@ export class Login {
 
                 const u = new URL(page.url())
                 const atRewardHome = u.hostname === 'rewards.bing.com' && u.pathname === '/'
+                const atWelcome = u.hostname === 'rewards.bing.com' && u.pathname === '/welcome'
+
+                if (atWelcome) {
+                    this.bot.logger.info(this.bot.isMobile, 'GET-REWARD-SESSION', 'At Rewards welcome page, forcing sign-in...')
+                    const signInButton = await page
+                        .getByText(/Sign in/i)
+                        .or(page.locator('#login-button'))
+                        .or(page.locator('a[href*="signin"]'))
+                        .first()
+
+                    if (await signInButton.isVisible().catch(() => false)) {
+                        await signInButton.click({ force: true })
+                        await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => { })
+                        await this.bot.utils.wait(2000)
+                        continue
+                    }
+                }
 
                 if (atRewardHome) {
                     await this.bot.browser.utils.tryDismissAllMessages(page)

@@ -51,7 +51,7 @@ export default class BrowserFunc {
             // If desktop cookies failed, try with mobile cookies as fallback (mobile always completes the OIDC chain)
             if (!this.bot.isMobile && mobileCookies.length > 0) {
                 try {
-                    this.bot.logger.debug(false, 'GET-DASHBOARD-DATA', 'Desktop API failed, retrying with mobile cookies')
+                    this.bot.logger.warn(false, 'GET-DASHBOARD-DATA', `Desktop API failed (${error instanceof Error ? error.message : 'Unknown'}), retrying with mobile cookies...`)
                     const fallbackRequest: AxiosRequestConfig = {
                         url: 'https://rewards.bing.com/api/getuserinfo?type=1',
                         method: 'GET',
@@ -68,15 +68,15 @@ export default class BrowserFunc {
                     }
                     const fallbackResponse = await this.bot.axios.request(fallbackRequest)
                     if (fallbackResponse.data?.dashboard) {
-                        this.bot.logger.debug(false, 'GET-DASHBOARD-DATA', 'Mobile cookie fallback succeeded for desktop session')
+                        this.bot.logger.info(false, 'GET-DASHBOARD-DATA', 'Bingo! Mobile cookie fallback succeeded for desktop session')
                         return fallbackResponse.data.dashboard as DashboardData
                     }
-                } catch {
-                    // Mobile cookie fallback also failed, continue to HTML fallback
+                } catch (fallbackApiError) {
+                    this.bot.logger.debug(false, 'GET-DASHBOARD-DATA', `Mobile fallback API also failed: ${fallbackApiError instanceof Error ? fallbackApiError.message : String(fallbackApiError)}`)
                 }
             }
 
-            this.bot.logger.warn(this.bot.isMobile, 'GET-DASHBOARD-DATA', 'API failed, trying HTML fallback')
+            this.bot.logger.warn(this.bot.isMobile, 'GET-DASHBOARD-DATA', 'API failed completely, trying HTML fallback')
 
             // Try using script from dashboard page
             const htmlCookies = !this.bot.isMobile && mobileCookies.length > 0 ? mobileCookies : cookies
