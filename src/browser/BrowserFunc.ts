@@ -25,6 +25,8 @@ export default class BrowserFunc {
         const cookies = this.bot.isMobile ? this.bot.cookies.mobile : this.bot.cookies.desktop
         const mobileCookies = this.bot.cookies.mobile
 
+        this.bot.logger.debug(this.bot.isMobile, 'GET-DASHBOARD-DATA', `Attempting to fetch dashboard data for context: ${this.bot.isMobile ? 'Mobile' : 'Desktop'}`)
+
         try {
             const request: AxiosRequestConfig = {
                 url: 'https://rewards.bing.com/api/getuserinfo?type=1',

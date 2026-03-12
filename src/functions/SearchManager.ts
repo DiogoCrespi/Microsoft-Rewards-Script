@@ -20,7 +20,7 @@ interface SearchResults {
 }
 
 export class SearchManager {
-    constructor(private bot: MicrosoftRewardsBot) {}
+    constructor(private bot: MicrosoftRewardsBot) { }
 
     async doSearches(
         data: DashboardData,
@@ -226,8 +226,7 @@ export class SearchManager {
             this.bot.logger.info(
                 'main',
                 'SEARCH-MANAGER',
-                `Parallel summary | mobile=${mobilePoints} | desktop=${desktopPoints} | total=${
-                    mobilePoints + desktopPoints
+                `Parallel summary | mobile=${mobilePoints} | desktop=${desktopPoints} | total=${mobilePoints + desktopPoints
                 }`
             )
 
@@ -351,8 +350,7 @@ export class SearchManager {
         this.bot.logger.info(
             'main',
             'SEARCH-MANAGER',
-            `Sequential summary | mobile=${mobilePoints} | desktop=${desktopPoints} | total=${
-                mobilePoints + desktopPoints
+            `Sequential summary | mobile=${mobilePoints} | desktop=${desktopPoints} | total=${mobilePoints + desktopPoints
             }`
         )
         this.bot.logger.debug('main', 'SEARCH-MANAGER', `Sequential done | account=${accountEmail}`)
@@ -369,7 +367,13 @@ export class SearchManager {
         )
 
         const session = await this.bot['browserFactory'].createBrowser(account)
-        this.bot.logger.debug('main', 'SEARCH-DESKTOP-LOGIN', 'Browser created, new page')
+        this.bot.logger.debug('main', 'SEARCH-DESKTOP-LOGIN', 'Browser created, pre-seeding context')
+
+        // Pre-inject mobile cookies into desktop context to skip login if possible (SSO)
+        if (this.bot.cookies.mobile && this.bot.cookies.mobile.length > 0) {
+            this.bot.logger.debug('main', 'SEARCH-DESKTOP-LOGIN', `Pre-injecting ${this.bot.cookies.mobile.length} mobile cookies into desktop session`)
+            await session.context.addCookies(this.bot.cookies.mobile)
+        }
 
         this.bot.mainDesktopPage = await session.context.newPage()
 

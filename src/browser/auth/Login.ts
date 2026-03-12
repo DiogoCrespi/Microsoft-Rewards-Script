@@ -720,8 +720,9 @@ export class Login {
 
                     if (await signInButton.isVisible().catch(() => false)) {
                         await signInButton.click({ force: true })
-                        await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => { })
-                        await this.bot.utils.wait(2000)
+                        // Wait specifically for OIDC or Bing redirect with longer timeout
+                        await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => { })
+                        await this.bot.utils.wait(3000)
                         continue
                     }
                 }
