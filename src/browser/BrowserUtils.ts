@@ -80,6 +80,9 @@ export default class BrowserUtils {
                 }
                 await this.bot.utils.wait(250)
             }
+
+            // Dismiss welcome/makeover screen if present
+            await this.bot.workers.dismissGetRewardsWelcome(page).catch(() => {})
         } catch (error) {
             this.bot.logger.warn(
                 this.bot.isMobile,

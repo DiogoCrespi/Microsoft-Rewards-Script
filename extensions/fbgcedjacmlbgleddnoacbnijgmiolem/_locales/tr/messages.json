@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+    "description": "Language",
+    "message": "tr-tr"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Şimdi deneyin, ücretsiz! Bing ile arama yaptığınız zaman büyük ödüller için puan kazanmaya devam edersiniz."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Teklif, yeni Microsoft Rewards üyeleri için geçerlidir. Microsoft ve iş ortağı ürünleri de dahil olmak üzere Microsoft Rewards ile ilgili e-postalar alırsınız."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Katıl"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Gizlilik"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Oturum aç"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Koşullar"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Microsoft’tan ödüller kazanın"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Her gün kazanmak için yeni yollar bulmak, puanlarınızı kolay bir şekilde takip etmek ve varsayılan aramanızı Bing olarak ayarlamak için Microsoft Rewards uzantısını kullanın"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

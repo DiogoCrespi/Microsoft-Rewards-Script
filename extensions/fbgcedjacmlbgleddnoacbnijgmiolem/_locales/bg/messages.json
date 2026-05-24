@@ -1,0 +1,46 @@
+{
+  "ExtnLanguage": {
+    "description": "Language",
+    "message": "bg-bg"
+  },
+  "Flyout_Signup_Description": {
+    "description": "Rewards flyout Signup description",
+    "message": "Изпробвайте го сега, безплатно! Ще продължите да печелите точки за страхотни награди, когато търсите с Bing."
+  },
+  "Flyout_Signup_Disclaimer": {
+    "description": "Rewards flyout Signup disclaimer",
+    "message": "Предложението е валидно за нови членове на Microsoft Rewards. Ще получавате имейли за Microsoft Rewards, включително предложения за продукти на Microsoft и партньори."
+  },
+  "Flyout_Signup_Join": {
+    "description": "Rewards flyout Signup join",
+    "message": "Присъединяване"
+  },
+  "Flyout_Signup_Privacy": {
+    "description": "Rewards flyout Signup privacy",
+    "message": "Поверителност"
+  },
+  "Flyout_Signup_Separator": {
+    "description": "Separator between Terms and Privacy links",
+    "message": " | "
+  },
+  "Flyout_Signup_SignIn": {
+    "description": "Rewards flyout Signup sign in link",
+    "message": "Вход"
+  },
+  "Flyout_Signup_Terms": {
+    "description": "Rewards flyout Signup terms",
+    "message": "Условия"
+  },
+  "Flyout_Signup_Title": {
+    "description": "Rewards flyout Signup title",
+    "message": "Бъдете възнаградени от Microsoft"
+  },
+  "RewardsDesc": {
+    "description": "Microsoft Rewards Description",
+    "message": "Използвайте разширението Microsoft Rewards, за да намирате нови начини да печелите всеки ден, лесно да проследявате точките си и да задавате търсенето по подразбиране на Bing"
+  },
+  "RewardsTitle": {
+    "description": "Microsoft Rewards title",
+    "message": "Microsoft Bing Search with Rewards"
+  }
+}

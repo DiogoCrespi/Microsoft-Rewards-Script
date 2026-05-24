@@ -1,0 +1,46 @@
+{
+  "ExtnLanguage": {
+    "description": "Language",
+    "message": "lt-lt"
+  },
+  "Flyout_Signup_Description": {
+    "description": "Rewards flyout Signup description",
+    "message": "Išbandykite dabar nemokamai! Ieškodami su „Bing“, pelnysite taškų, už kuriuos galėsite gauti puikų atlygį."
+  },
+  "Flyout_Signup_Disclaimer": {
+    "description": "Rewards flyout Signup disclaimer",
+    "message": "Pasiūlymas galioja naujiems „Microsoft Rewards“ nariams. Gausite el. laiškus apie „Microsoft Rewards“, įskaitant „Microsoft“ ir partnerių produktų pasiūlymus."
+  },
+  "Flyout_Signup_Join": {
+    "description": "Rewards flyout Signup join",
+    "message": "Pradėti naudotis"
+  },
+  "Flyout_Signup_Privacy": {
+    "description": "Rewards flyout Signup privacy",
+    "message": "Privatumas"
+  },
+  "Flyout_Signup_Separator": {
+    "description": "Separator between Terms and Privacy links",
+    "message": " | "
+  },
+  "Flyout_Signup_SignIn": {
+    "description": "Rewards flyout Signup sign in link",
+    "message": "Prisijungti"
+  },
+  "Flyout_Signup_Terms": {
+    "description": "Rewards flyout Signup terms",
+    "message": "Sąlygos"
+  },
+  "Flyout_Signup_Title": {
+    "description": "Rewards flyout Signup title",
+    "message": "Gaukite atlygį iš „Microsoft“"
+  },
+  "RewardsDesc": {
+    "description": "Microsoft Rewards Description",
+    "message": "Naudokite „Microsoft Rewards“ plėtinį, kad rastumėte naujų būdų, kaip uždirbti kiekvieną dieną, lengvai sektumėte savo taškus ir nustatytumėte savo iešką naudojant „Bing“ kaip numatytąją"
+  },
+  "RewardsTitle": {
+    "description": "Microsoft Rewards title",
+    "message": "Microsoft Bing Search with Rewards"
+  }
+}

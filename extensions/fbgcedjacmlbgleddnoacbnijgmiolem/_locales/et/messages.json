@@ -1,0 +1,46 @@
+{
+  "ExtnLanguage": {
+    "description": "Language",
+    "message": "et-ee"
+  },
+  "Flyout_Signup_Description": {
+    "description": "Rewards flyout Signup description",
+    "message": "Proovige kohe, tasuta! Bingi otsingut kasutades teenite punkte suurepäraste preemiate saamiseks."
+  },
+  "Flyout_Signup_Disclaimer": {
+    "description": "Rewards flyout Signup disclaimer",
+    "message": "Pakkumine kehtib uutele Microsoft Rewards liikmetele. Saate meilisõnumeid Microsoft Rewards kohta, sh Microsofti ja partnerite toodete pakkumisi."
+  },
+  "Flyout_Signup_Join": {
+    "description": "Rewards flyout Signup join",
+    "message": "Liituge"
+  },
+  "Flyout_Signup_Privacy": {
+    "description": "Rewards flyout Signup privacy",
+    "message": "Privaatsus"
+  },
+  "Flyout_Signup_Separator": {
+    "description": "Separator between Terms and Privacy links",
+    "message": " | "
+  },
+  "Flyout_Signup_SignIn": {
+    "description": "Rewards flyout Signup sign in link",
+    "message": "Logi sisse"
+  },
+  "Flyout_Signup_Terms": {
+    "description": "Rewards flyout Signup terms",
+    "message": "Tingimused"
+  },
+  "Flyout_Signup_Title": {
+    "description": "Rewards flyout Signup title",
+    "message": "Microsoft premeerib"
+  },
+  "RewardsDesc": {
+    "description": "Microsoft Rewards Description",
+    "message": "Microsoft Rewardsi laienduse abil saate leida uusi viise iga päev teenimiseks, jälgige hõlpsasti oma punkte ja seadke oma vaikimisi otsinguks Bing"
+  },
+  "RewardsTitle": {
+    "description": "Microsoft Rewards title",
+    "message": "Microsoft Bing Search with Rewards"
+  }
+}

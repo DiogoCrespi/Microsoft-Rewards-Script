@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "hr-hr"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Isprobajte sada, besplatno! I dalje ćete osvajati bodove za super nagrade pretraživanjem putem tražilice Bing."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Ponuda je valjana za nove članove programa Microsoft Rewards. Primat ćete poruke e-pošte o programu Microsoft Rewards, uključujući ponude o Microsoftovim i partnerskim proizvodima."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Pridružite se"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Zaštita privatnosti"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Prijavite se"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Uvjeti"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Primite nagradu od Microsofta"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Koristite proširenje za Microsoft Rewards da biste pronašli nove načine za osvajanje i jednostavno praćenje bodova te postavljanje tražilice Bing kao zadane"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

@@ -1,0 +1,46 @@
+{
+  "ExtnLanguage": {
+    "description": "Language",
+    "message": "el-gr"
+  },
+  "Flyout_Signup_Description": {
+    "description": "Rewards flyout Signup description",
+    "message": "Δοκιμάστε το τώρα, δωρεάν! Θα συνεχίσετε να κερδίζετε πόντους προς εξαιρετικές ανταμοιβές κατά την αναζήτηση με το Bing."
+  },
+  "Flyout_Signup_Disclaimer": {
+    "description": "Rewards flyout Signup disclaimer",
+    "message": "Η προσφορά ισχύει για νέα μέλη του Microsoft Rewards. Θα λάβετε μηνύματα ηλεκτρονικού ταχυδρομείου σχετικά με το Microsoft Rewards, συμπεριλαμβανομένων προσφορών σχετικά με τη Microsoft και τα προϊόντα συνεργατών."
+  },
+  "Flyout_Signup_Join": {
+    "description": "Rewards flyout Signup join",
+    "message": "Συμμετοχή"
+  },
+  "Flyout_Signup_Privacy": {
+    "description": "Rewards flyout Signup privacy",
+    "message": "Προστασία προσωπικών δεδομένων"
+  },
+  "Flyout_Signup_Separator": {
+    "description": "Separator between Terms and Privacy links",
+    "message": " | "
+  },
+  "Flyout_Signup_SignIn": {
+    "description": "Rewards flyout Signup sign in link",
+    "message": "Είσοδος"
+  },
+  "Flyout_Signup_Terms": {
+    "description": "Rewards flyout Signup terms",
+    "message": "Όροι"
+  },
+  "Flyout_Signup_Title": {
+    "description": "Rewards flyout Signup title",
+    "message": "Επιβραβευτείτε από τη Microsoft"
+  },
+  "RewardsDesc": {
+    "description": "Microsoft Rewards Description",
+    "message": "Χρησιμοποιήστε την επέκταση Microsoft Rewards για να βρείτε νέους τρόπους για να κερδίζετε καθημερινά, να παρακολουθείτε εύκολα τους πόντους σας και να ορίζετε την προεπιλεγμένη αναζήτησή σας στο Bing"
+  },
+  "RewardsTitle": {
+    "description": "Microsoft Rewards title",
+    "message": "Microsoft Bing Search with Rewards"
+  }
+}

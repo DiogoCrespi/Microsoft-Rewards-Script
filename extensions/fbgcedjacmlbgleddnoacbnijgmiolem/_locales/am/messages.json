@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "am-et"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "አሁን ይሞክሩት፣ ነፃ! በ Bing ሲፈልጉ ለታላቅ ሽልማቶች ነጥቦችን ማግኘትዎን ይቀጥላሉ።"
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "ለአዲስ የ Microsoft Rewards አባላት የሚሰራ። ስለ Microsoft ሽልማቶች፣ ስለ Microsoft እና አጋር ምርቶች ቅናሾችን ጨምሮ ኢሜይሎችን ይደርስዎታል።"
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "ይቀላቀሉ"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "ግላዊነት"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "በመለያ ይግቡ"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "ውሎች"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "በ Microsoft ይሸለሙ"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "በየቀኑ ለማግኘት አዳዲስ መንገዶችን ለማግኘት፣ ነጥቦችዎን በቀላሉ ለመከታተል እና ነባሪ ፍለጋዎን ወደ Bing ለማዘጋጀት የ Microsoft Rewards ቅጥያ ይጠቀሙ"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

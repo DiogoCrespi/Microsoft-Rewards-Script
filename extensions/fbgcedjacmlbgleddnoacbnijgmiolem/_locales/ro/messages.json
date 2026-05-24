@@ -1,0 +1,46 @@
+{
+  "ExtnLanguage": {
+    "description": "Language",
+    "message": "ro-ro"
+  },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Încercați acum, gratuit! Veți câștiga în continuare puncte pentru recompense deosebite atunci când căutați cu Bing."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Ofertă valabilă pentru noii membri Microsoft Rewards. Veți primi e-mailuri despre Microsoft Rewards, inclusiv oferte despre produsele Microsoft și ale partenerilor."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Alăturați-vă"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Confidențialitate"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Conectați-vă"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Termeni"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Obțineți recompense de la Microsoft"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Utilizați extensia Microsoft Rewards pentru a găsi noi modalități de a câștiga în fiecare zi, pentru a vă urmări cu ușurință punctele și pentru a seta căutarea implicită la Bing"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

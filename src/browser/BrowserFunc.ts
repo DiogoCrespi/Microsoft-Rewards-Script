@@ -234,8 +234,24 @@ export default class BrowserFunc {
                 ) ?? 0
 
             const todayDate = this.bot.utils.getFormattedDate()
+            let dailySetPromos = data.dailySetPromotions[todayDate]
+            if (!dailySetPromos) {
+                const keys = Object.keys(data.dailySetPromotions || {})
+                for (const key of keys) {
+                    if (data.dailySetPromotions[key] && data.dailySetPromotions[key]!.length > 0) {
+                        const hasUncompleted = data.dailySetPromotions[key]!.some(x => !x.complete && x.pointProgressMax > 0)
+                        if (hasUncompleted) {
+                            dailySetPromos = data.dailySetPromotions[key]
+                            break
+                        }
+                    }
+                }
+                if (!dailySetPromos && keys.length > 0) {
+                    dailySetPromos = data.dailySetPromotions[keys[0]!]
+                }
+            }
             const dailySetPoints =
-                data.dailySetPromotions[todayDate]?.reduce(
+                dailySetPromos?.reduce(
                     (sum, x) => sum + (x.pointProgressMax - x.pointProgress),
                     0
                 ) ?? 0

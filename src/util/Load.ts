@@ -78,8 +78,9 @@ export async function loadSessionData(
     isMobile: boolean
 ) {
     try {
+        const projectRoot = path.join(__dirname, '../../')
         const cookiesFileName = isMobile ? 'session_mobile.json' : 'session_desktop.json'
-        const cookieFile = path.join(__dirname, '../browser/', sessionPath, email, cookiesFileName)
+        const cookieFile = path.join(projectRoot, sessionPath, email, cookiesFileName)
 
         let cookies: Cookie[] = []
         if (fs.existsSync(cookieFile)) {
@@ -88,7 +89,7 @@ export async function loadSessionData(
         }
 
         const fingerprintFileName = isMobile ? 'session_fingerprint_mobile.json' : 'session_fingerprint_desktop.json'
-        const fingerprintFile = path.join(__dirname, '../browser/', sessionPath, email, fingerprintFileName)
+        const fingerprintFile = path.join(projectRoot, sessionPath, email, fingerprintFileName)
 
         let fingerprint!: BrowserFingerprintWithHeaders
         const shouldLoadFingerprint = isMobile ? saveFingerprint.mobile : saveFingerprint.desktop
@@ -113,7 +114,8 @@ export async function saveSessionData(
     isMobile: boolean
 ): Promise<string> {
     try {
-        const sessionDir = path.join(__dirname, '../browser/', sessionPath, email)
+        const projectRoot = path.join(__dirname, '../../')
+        const sessionDir = path.join(projectRoot, sessionPath, email)
         const cookiesFileName = isMobile ? 'session_mobile.json' : 'session_desktop.json'
 
         if (!fs.existsSync(sessionDir)) {
@@ -135,7 +137,8 @@ export async function saveFingerprintData(
     fingerpint: BrowserFingerprintWithHeaders
 ): Promise<string> {
     try {
-        const sessionDir = path.join(__dirname, '../browser/', sessionPath, email)
+        const projectRoot = path.join(__dirname, '../../')
+        const sessionDir = path.join(projectRoot, sessionPath, email)
         const fingerprintFileName = isMobile ? 'session_fingerprint_mobile.json' : 'session_fingerprint_desktop.json'
 
         if (!fs.existsSync(sessionDir)) {

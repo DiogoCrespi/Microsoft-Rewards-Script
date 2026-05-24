@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "nb-no"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Prøv det nå, helt gratis. Få poeng til gratis gavekort med Microsoft Rewards"
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Tilbudet gjelder for nye medlemmer av Microsoft Rewards. Du får e-poster om Microsoft Rewards, deriblant tilbud om produkter fra Microsoft og partnere."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Bli med"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Personvern"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Logg på"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Vilkår"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Få belønninger fra Microsoft"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Bruk Microsoft Rewards-utvidelsen for å finne måter å få poeng på hver dag, spore poengene dine, og angi standard søkemotor som Bing"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

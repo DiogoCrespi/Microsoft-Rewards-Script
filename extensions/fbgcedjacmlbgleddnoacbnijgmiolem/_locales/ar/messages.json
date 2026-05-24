@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "ar-sa"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "جربه الآن، مجانا! سوف تستمر في كسب النقاط للحصول على مكافآت رائعة عند البحث باستخدام Bing"
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "العرض صالح لأعضاء Microsoft Rewards الجدد. ستتلقى رسائل بريد إلكتروني حول Microsoft Rewards، بما في ذلك عروض حول منتجات Microsoft والشركاء."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "انضمام"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "الخصوصية"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "تسجيل الدخول"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "الشروط"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "الحصول على مكافأة من Microsoft"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "استخدم ملحق Microsoft Rewards للعثور على طرق جديدة للربح كل يوم، تعقب نقاطك بسهولة وقم بتعيين البحث الافتراضي إلى Bing"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

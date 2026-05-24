@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "ko-kr"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "지금 무료로 사용해 보세요! Bing으로 검색하면 큰 보상을 받을 수 있는 포인트를 계속 적립할 수 있습니다."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "새로운 Microsoft Rewards 구성원에게 유효한 제안입니다. Microsoft 및 파트너 제품에 대한 제안을 포함하여 Microsoft Rewards에 대한 이메일을 받게 됩니다."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "참가"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "개인 정보 보호"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "로그인"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "사용 약관"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Microsoft에서 보상받기"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Microsoft Rewards 확장 프로그램을 사용하여 포인트를 쉽게 추적하고 매일 적립할 수 있는 새로운 방법을 알아보고 기본 검색을 Bing으로 설정합니다."
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

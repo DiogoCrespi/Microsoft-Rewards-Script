@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "fi-fi"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Kokeile nyt maksutta! Tehdessäsi hakuja Bingillä ansaitset pisteitä, joilla voit lunastaa mahtavia palkintoja."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Tarjous on voimassa uusille Microsoft Rewards -jäsenille. Saat sähköpostiviestejä Microsoft Rewardsilta, kuten Microsoftin ja kumppaneiden tuotetarjouksia."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Liity"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Tietosuoja"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Kirjaudu sisään"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Ehdot"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Microsoft palkitsee sinut"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Microsoft Rewards -laajennuksella voit etsiä uusia tapoja ansaita rahaa joka päivä, seurata pisteitäsi helposti ja määrittää oletushaun Bingiin"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

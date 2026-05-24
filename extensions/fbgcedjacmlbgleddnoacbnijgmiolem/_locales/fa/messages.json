@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "fa-ir"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "هم‌اکنون آن را رایگان امتحان کنید! هنگامی که با Bing جستجو می‌کنید، به کسب امتیاز برای جوایز بزرگ ادامه خواهید داد."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "پیشنهاد برای اعضای جدید Microsoft Rewards معتبر است. ایمیل‌هایی را درباره Microsoft Rewards دریافت خواهید کرد که شامل پیشنهادهایی درباره Microsoft و محصولات شریک است."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "پیوستن"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "حریم خصوصی"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "ورود به سیستم"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "شرایط"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "توسط Microsoft جایزه دریافت کنید"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "با استفاده از افزونه  Microsoft Rewards، روش‌های جدیدی را برای کسب امتیاز در هر روز بیابید، به‌راحتی امتیازهای خود را پیگیری کنید و جستجوی پیش‌فرض خود را روی Bing تنظیم کنید"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

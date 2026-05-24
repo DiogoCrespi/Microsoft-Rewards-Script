@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "zh-tw"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "立即體驗，完全免費！透過 Microsoft Rewards 賺取點數，兌換免費獎品"
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "優惠方案適用於 Microsoft Rewards 新會員。您會收到有關 Microsoft Rewards 的電子郵件，提供 Microsoft 和合作夥伴產品優惠方案資訊。"
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "加入"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "隱私權"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "登入"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "條款"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "獲取 Microsoft 提供的獎賞"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "使用 Microsoft Rewards 擴充功能，就可以找到天天賺點數、輕鬆追蹤點數，以及將預設搜尋引擎設為 Bing 的全新方式"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

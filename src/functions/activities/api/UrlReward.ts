@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
+import type { Page } from 'patchright'
 import type { BasePromotion } from '../../../interface/DashboardData'
 import { Workers } from '../../Workers'
 
@@ -11,8 +12,58 @@ export class UrlReward extends Workers {
 
     private oldBalance: number = this.bot.userData.currentPoints
 
-    public async doUrlReward(promotion: BasePromotion) {
-        if (!this.bot.requestToken) {
+    public async doUrlReward(promotion: BasePromotion, page?: Page) {
+        const offerId = promotion.offerId
+
+        if (this.bot.rewardsVersion === 'modern' && page) {
+            this.bot.logger.info(
+                this.bot.isMobile,
+                'URL-REWARD',
+                `Resolving UrlReward via browser navigation | offerId=${offerId} | url=${promotion.destinationUrl}`
+            )
+            try {
+                const browserContext = page.context()
+                const newPage = await browserContext.newPage()
+                // Wait for full load and scroll/stay longer to ensure tracking registers
+                await newPage.goto(promotion.destinationUrl, { waitUntil: 'load', timeout: 20000 }).catch(() => {})
+                await this.bot.utils.wait(3000)
+                await newPage.evaluate(() => window.scrollBy(0, window.innerHeight / 2)).catch(() => {})
+                await this.bot.utils.wait(this.bot.utils.randomDelay(3000, 5000))
+                await newPage.evaluate(() => window.scrollTo(0, 0)).catch(() => {})
+                await this.bot.utils.wait(this.bot.utils.randomDelay(2000, 4000))
+                await newPage.close()
+
+                const newBalance = await this.bot.browser.func.getCurrentPoints()
+                this.gainedPoints = newBalance - this.oldBalance
+
+                if (this.gainedPoints > 0) {
+                    this.bot.userData.currentPoints = newBalance
+                    this.bot.userData.gainedPoints = (this.bot.userData.gainedPoints ?? 0) + this.gainedPoints
+
+                    this.bot.logger.info(
+                        this.bot.isMobile,
+                        'URL-REWARD',
+                        `Completed UrlReward (Browser) | offerId=${offerId} | gainedPoints=${this.gainedPoints} | newBalance=${newBalance}`,
+                        'green'
+                    )
+                } else {
+                    this.bot.logger.warn(
+                        this.bot.isMobile,
+                        'URL-REWARD',
+                        `UrlReward (Browser) completed but no points gained yet | offerId=${offerId} | balance=${newBalance}`
+                    )
+                }
+                return
+            } catch (browserError) {
+                this.bot.logger.error(
+                    this.bot.isMobile,
+                    'URL-REWARD',
+                    `Browser navigation failed: ${browserError instanceof Error ? browserError.message : String(browserError)}. Falling back to API...`
+                )
+            }
+        }
+
+        if (!this.bot.requestToken && this.bot.rewardsVersion === 'classic') {
             this.bot.logger.warn(
                 this.bot.isMobile,
                 'URL-REWARD',
@@ -20,8 +71,6 @@ export class UrlReward extends Workers {
             )
             return
         }
-
-        const offerId = promotion.offerId
 
         this.bot.logger.info(
             this.bot.isMobile,
@@ -114,6 +163,50 @@ export class UrlReward extends Workers {
                     'URL-REWARD',
                     `Failed UrlReward with no points | offerId=${offerId} | status=${response.status} | oldBalance=${this.oldBalance} | newBalance=${newBalance}`
                 )
+                if (page && promotion.destinationUrl) {
+                    this.bot.logger.info(
+                        this.bot.isMobile,
+                        'URL-REWARD',
+                        `Attempting browser navigation fallback for UrlReward | offerId=${offerId} | url=${promotion.destinationUrl}`
+                    )
+                    try {
+                        const browserContext = page.context()
+                        const newPage = await browserContext.newPage()
+                        // Wait for full load and scroll/stay longer to ensure tracking registers
+                        await newPage.goto(promotion.destinationUrl, { waitUntil: 'load', timeout: 20000 }).catch(() => {})
+                        await this.bot.utils.wait(3000)
+                        await newPage.evaluate(() => window.scrollBy(0, window.innerHeight / 2)).catch(() => {})
+                        await this.bot.utils.wait(this.bot.utils.randomDelay(3000, 5000))
+                        await newPage.evaluate(() => window.scrollTo(0, 0)).catch(() => {})
+                        await this.bot.utils.wait(this.bot.utils.randomDelay(2000, 4000))
+                        await newPage.close()
+
+                        const postBalance = await this.bot.browser.func.getCurrentPoints()
+                        const postGained = postBalance - this.oldBalance
+                        if (postGained > 0) {
+                            this.bot.userData.currentPoints = postBalance
+                            this.bot.userData.gainedPoints = (this.bot.userData.gainedPoints ?? 0) + postGained
+                            this.bot.logger.info(
+                                this.bot.isMobile,
+                                'URL-REWARD',
+                                `Completed UrlReward via browser fallback | offerId=${offerId} | gainedPoints=${postGained} | newBalance=${postBalance}`,
+                                'green'
+                            )
+                        } else {
+                            this.bot.logger.warn(
+                                this.bot.isMobile,
+                                'URL-REWARD',
+                                `Browser fallback completed but still no points gained | offerId=${offerId}`
+                            )
+                        }
+                    } catch (fallbackError) {
+                        this.bot.logger.error(
+                            this.bot.isMobile,
+                            'URL-REWARD',
+                            `Browser fallback failed: ${fallbackError instanceof Error ? fallbackError.message : String(fallbackError)}`
+                        )
+                    }
+                }
             }
 
             this.bot.logger.debug(this.bot.isMobile, 'URL-REWARD', `Waiting after UrlReward | offerId=${offerId}`)

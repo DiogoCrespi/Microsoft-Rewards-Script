@@ -1,0 +1,33 @@
+body, iframe {
+    font-family: "Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.reward-right-pane {
+    position: fixed;
+    top: 0;
+    right: -376px;
+    height: 100vh;
+    width: 376px;
+    background-color: #fbfbfb;
+    border-left: 1px solid #ccc;
+    transition: right 0.2s ease-in;
+    right: 0px;
+    z-index: 100000;
+    display: block !important;
+    margin: 0px !important;
+}
+
+div.reward-right-pane.open {
+  right: 0;
+}
+
+iframe.reward-pane-frame {
+  height: 100%;
+  width: 100%;
+  border: none;
+}
+
+section.hide {
+    display: none !important;
+}

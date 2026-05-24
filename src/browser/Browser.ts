@@ -57,10 +57,24 @@ class Browser {
                   }
                 : undefined
 
+            let extensionArgs: string[] = []
+            if (this.bot.config.workers.doExtensionActivities) {
+                try {
+                    const { downloadAndUnpackExtension } = await import('../util/ExtensionManager')
+                    const unpackedPath = await downloadAndUnpackExtension(this.bot.logger)
+                    extensionArgs = [
+                        `--disable-extensions-except=${unpackedPath}`,
+                        `--load-extension=${unpackedPath}`
+                    ]
+                } catch (extError) {
+                    this.bot.logger.error(this.bot.isMobile, 'BROWSER', `Failed to load extension: ${extError instanceof Error ? extError.message : String(extError)}`)
+                }
+            }
+
             browser = await rebrowser.chromium.launch({
-                headless: this.bot.config.headless,
+                headless: this.bot.config.workers.doExtensionActivities ? false : this.bot.config.headless,
                 ...(proxyConfig && { proxy: proxyConfig }),
-                args: [...Browser.BROWSER_ARGS]
+                args: [...Browser.BROWSER_ARGS, ...extensionArgs]
             })
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error)

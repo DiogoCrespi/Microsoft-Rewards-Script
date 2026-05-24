@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "bn-in"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "এটি বিনামূল্যে এখনই ব্যবহার করে দেখুন! আপনি যখন Bing-এর সাথে অনুসন্ধান করবেন তখন আপনি দুর্দান্ত পুরস্কারের জন্য পয়েন্ট অর্জন করতে থাকবেন।"
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "নতুন Microsoft Rewards সদস্যদের জন্য অফারটি বৈধ। আপনি Microsoft এবং অংশীদার পণ্যগুলো সম্পর্কে অফার সহ Microsoft Rewards সম্পর্কে ইমেল পাবেন।."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "যোগ দিন"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "গোপনীয়তা"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "সাইন ইন করুন"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "শর্তাব"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Microsoft-এর থেকে পুরস্কার পান"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "প্রতিদিন উপার্জনের নতুন উপায় খুঁজতে, সহজেই আপনার পয়েন্ট ট্র্যাক করতে এবং আপনার ডিফল্ট অনুসন্ধানকে Bing-এ সেট করতে Microsoft Rewards এক্সটেনশন ব্যবহার করুন"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

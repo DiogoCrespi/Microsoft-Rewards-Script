@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "fil-ph"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Subukan ito ngayon, libre! Patuloy kang makakakuha ng puntos patungo sa magandang rewards kapag naghanap ka gamit ang Bing."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Valid ang alok para sa mga bagong miyembro ng Microsoft Rewards. Makakatanggap ka ng mga email tungkol sa Microsoft Rewards, kabilang ang mga alok tungkol sa Microsoft at mga produkto ng kasosyo."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Sumali"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Privacy"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Mag-sign in"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Mga Tuntunin"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Makatanggap ng reward sa Microsoft"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Gamitin ang extension ng Microsoft Rewards para makahanap ng mga bagong paraan para makakuha araw-araw, madaling subaybayan ang iyong mga puntos at itakda ang iyong default na paghahanap sa Bing"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

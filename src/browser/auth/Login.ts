@@ -714,8 +714,9 @@ export class Login {
             this.bot.logger.warn(
                 this.bot.isMobile,
                 'GET-REWARD-SESSION',
-                'No RequestVerificationToken found, some activities may not work'
+                'No RequestVerificationToken found, assuming modern dashboard (rewardsVersion = modern)'
             )
+            this.bot.rewardsVersion = 'modern'
         } catch (error) {
             throw this.bot.logger.error(
                 this.bot.isMobile,

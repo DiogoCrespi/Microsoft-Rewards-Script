@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "vi-vn"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Dùng thử miễn phí ngay! Bạn sẽ tiếp tục kiếm được điểm để giành được những phần thưởng tuyệt vời khi tìm kiếm bằng Bing."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Ưu đãi có hiệu lực cho các thành viên mới của Microsoft Rewards. Bạn sẽ nhận được email về Microsoft Rewards, bao gồm các ưu đãi về các sản phẩm của Microsoft và đối tác."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Tham gia"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Quyền riêng tư"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Đăng nhập"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Điều khoản"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Nhận phần thưởng từ Microsoft"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Sử dụng phần mở rộng Microsoft Rewards để tìm những cách mới nhằm kiếm điểm mỗi ngày, dễ dàng theo dõi điểm của bạn và cài đặt tìm kiếm mặc định thành Bing"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

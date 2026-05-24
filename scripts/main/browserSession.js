@@ -40,8 +40,7 @@ if (!account) {
 }
 
 async function main() {
-    const runtimeBase = getRuntimeBase(projectRoot, args.dev)
-    const sessionBase = getSessionPath(runtimeBase, config.sessionPath, args.email)
+    const sessionBase = getSessionPath(projectRoot, config.sessionPath, args.email)
 
     log('INFO', 'Validating session data...')
 

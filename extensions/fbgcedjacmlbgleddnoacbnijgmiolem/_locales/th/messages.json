@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "th-th"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "ลองตอนนี้ฟรี! คุณจะได้รับคะแนนเพื่อรับรางวัลใหญ่ๆ ต่อไปเมื่อคุณค้นหาด้วย Bing."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "ข้อเสนอใช้ได้สําหรับสมาชิก Microsoft Rewards ใหม่ คุณจะได้รับอีเมลเกี่ยวกับ Microsoft Rewards รวมถึงข้อเสนอเกี่ยวกับผลิตภัณฑ์ Microsoft และผลิตภัณฑ์ของคู่ค้า"
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "เข้าร่วม"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "ความเป็นส่วนตั"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "ลงชื่อเข้าใช้"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "ลงชื่อเข้าใช้"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "รับรางวัลจาก Microsoft"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "ใช้ส่วนขยาย Microsoft Rewards เพื่อค้นหาวิธีใหม่ๆ ในการรับคะแนนทุกวัน ติดตามคะแนนของคุณได้อย่างง่ายดาย และตั้งค่าการค้นหาเริ่มต้นของคุณเป็น Bing"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

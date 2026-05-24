@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+    "description": "Language",
+    "message": "uk-ua"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Спробуйте зараз безкоштовно! Ви й надалі отримуватимете бали для чудових винагород під час пошуку за допомогою Bing."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Пропозиція дійсна для нових учасників Microsoft Rewards. Ви отримуватимете електронні листи про Microsoft Rewards, включно з пропозиціями продуктів Корпорації Майкрософт і партнерів."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Приєднатися"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Конфіденційність"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Увійти"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Умови"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Отримуйте винагороди від корпорації Майкрософт"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Використовуйте розширення Microsoft Rewards для пошуку нових способів щодня отримувати бали, легко відстежуйте їх й встановіть Bing пошуковою системою за замовчуванням"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

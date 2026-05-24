@@ -1,0 +1,46 @@
+{
+  "ExtnLanguage": {
+    "description": "Language",
+    "message": "hu-hu"
+  },
+  "Flyout_Signup_Description": {
+    "description": "Rewards flyout Signup description",
+    "message": "Próbálja ki most, ingyen! A Binggel végzett keresések során folyamatosan pontokat gyűjthet nagyszerű jutalmakért."
+  },
+  "Flyout_Signup_Disclaimer": {
+    "description": "Rewards flyout Signup disclaimer",
+    "message": "Az ajánlat az új Microsoft Rewards tagok számára érvényes. E-maileket fog kapni a Microsoft Rewards programról, beleértve a Microsoft és partnerek termékeivel kapcsolatos ajánlatokat."
+  },
+  "Flyout_Signup_Join": {
+    "description": "Rewards flyout Signup join",
+    "message": "Csatlakozás"
+  },
+  "Flyout_Signup_Privacy": {
+    "description": "Rewards flyout Signup privacy",
+    "message": "Adatvédelem"
+  },
+  "Flyout_Signup_Separator": {
+    "description": "Separator between Terms and Privacy links",
+    "message": " | "
+  },
+  "Flyout_Signup_SignIn": {
+    "description": "Rewards flyout Signup sign in link",
+    "message": "Bejelentkezés"
+  },
+  "Flyout_Signup_Terms": {
+    "description": "Rewards flyout Signup terms",
+    "message": "Feltételek"
+  },
+  "Flyout_Signup_Title": {
+    "description": "Rewards flyout Signup title",
+    "message": "Kapjon jutalmat a Microsofttól"
+  },
+  "RewardsDesc": {
+    "description": "Microsoft Rewards Description",
+    "message": "Használja a Microsoft Rewards bővítményt, hogy minden nap új kereseti lehetőségeket találjon, könnyedén nyomon követhesse pontjait, és állítsa be az alapértelmezett keresést a Bingre"
+  },
+  "RewardsTitle": {
+    "description": "Microsoft Rewards title",
+    "message": "Microsoft Bing Search with Rewards"
+  }
+}

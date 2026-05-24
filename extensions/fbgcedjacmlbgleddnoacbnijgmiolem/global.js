@@ -1,0 +1,18 @@
+export const CHANNEL = "Channel";
+export const DPC = "DPC";
+export const LP_MARKET = "LPMKT";
+export const MACHINE_ID = "MachineID";
+export const MARKET = "Market";
+export const PARTNER_CODE = "PartnerCode";
+export const BCEX = "BCEX";
+export const DEFAULT_PARTNER_CODE = "U523";
+export const DEFAULT_CHANNEL = "Organic";
+export const ANID = 'ANID';
+export const GIFT_CARD_POPUP_TIME = 'GiftCardPopupTime';
+export const GET_USERINFO_URL = 'https://www.bing.com/msrewards/api/v1/getuserinfo';
+export const TELEMETRY_TYPE = {
+  PING: 'ping',
+  INSTALL: 'install',
+  FSN: 'fsn',
+  GIFT_CARD: 'giftCard'
+};

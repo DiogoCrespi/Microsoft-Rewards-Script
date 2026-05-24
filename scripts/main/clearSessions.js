@@ -30,6 +30,7 @@ log('INFO', 'Session path from config:', config.sessionPath)
 
 const configDir = path.dirname(configPath)
 const possibleSessionDirs = [
+    path.join(projectRoot, config.sessionPath),
     path.resolve(configDir, config.sessionPath),
     path.join(projectRoot, 'src/browser', config.sessionPath),
     path.join(projectRoot, 'dist/browser', config.sessionPath)

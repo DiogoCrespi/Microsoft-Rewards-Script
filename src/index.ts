@@ -93,7 +93,7 @@ export class MicrosoftRewardsBot {
     private exitedWorkers: number[]
     private browserFactory: Browser = new Browser(this)
     private accounts: Account[]
-    private workers: Workers
+    public workers: Workers
     private login = new Login(this)
     private searchManager: SearchManager
 
@@ -371,6 +371,7 @@ export class MicrosoftRewardsBot {
                 this.logger.info('main', 'BROWSER', `Mobile Browser started | ${accountEmail}`)
 
                 await this.login.login(this.mainMobilePage, account)
+                await this.workers.dismissGetRewardsWelcome(this.mainMobilePage)
 
                 try {
                     this.accessToken = await this.login.getAppAccessToken(this.mainMobilePage, accountEmail)
@@ -421,6 +422,15 @@ export class MicrosoftRewardsBot {
                 if (this.config.workers.doMorePromotions) await this.workers.doMorePromotions(data, this.mainMobilePage)
                 if (this.config.workers.doDailyCheckIn) await this.activities.doDailyCheckIn()
                 if (this.config.workers.doReadToEarn) await this.activities.doReadToEarn()
+                if (this.config.workers.doPunchCards) await this.workers.doPunchCards(data, this.mainMobilePage)
+
+                if (this.config.workers.doExtensionActivities) {
+                    await this.workers.doExtensionActivities(this.mainMobilePage)
+                }
+
+                // Reivindicar pontos pendentes e realizar promoções gráficas (ex: Spotify)
+                await this.workers.claimPendingPoints(this.mainMobilePage)
+                await this.workers.doUiEarnActivities(this.mainMobilePage)
 
                 const searchPoints = await this.browser.func.getSearchPoints()
                 const missingSearchPoints = this.browser.func.missingSearchPoints(searchPoints, true)

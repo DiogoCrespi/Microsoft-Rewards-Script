@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "ja-jp"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "今すぐ無料でお試しいただけます!Microsoft Rewards で無料ギフト カードのポイントを獲得"
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "本キャンペーンは Microsoft Rewards の新規メンバーがご利用になれます。マイクロソフト製品とパートナー製品のキャンペーン情報をお知らせする Microsoft Rewards のご案内メールをお送りします。"
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "参加する"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "プライバシー ポリシー"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "サインインする"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "使用条件"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "マイクロソフトのリワードを獲得しましょう"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Microsoft Rewards 拡張機能を使用してポイントを毎日獲得するための新しい方法を発見し、ポイントの追跡を簡単に行い、Bing を既定の検索エンジンに設定しましょう。"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

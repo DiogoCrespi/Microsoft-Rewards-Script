@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "hi-in"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "इसे अभी फ़्री में आज़माएँ! जब आप Bing के साथ खोजेंगे, तो आप शानदार पुरस्कारों के लिए पॉइंट कमाते रहेंगे."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "ऑफ़र नए Microsoft Rewards सदस्यों के लिए मान्य है. आपको Microsoft Rewards के बारे में ईमेल मिलेंगे, जिसमें Microsoft और भागीदार उत्पादों के बारे में ऑफ़र भी शामिल हैं."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "शामिल हों"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "गोपनीयता"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "साइन इन करें"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "शर्तें"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Microsoft द्वारा रिवॉर्ड पाएँ"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "हर दिन कमाने, अपने पॉइंट को आसानी से ट्रैक करने के नए तरीकों को खोजने और Bing को अपना डिफ़ॉल्ट खोज ब्राउज़र बनाने के लिए Microsoft Rewards एक्सटेंशन का उपयोग करें"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

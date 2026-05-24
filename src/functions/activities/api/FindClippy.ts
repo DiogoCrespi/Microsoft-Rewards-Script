@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
+import type { Page } from 'patchright'
 import type { FindClippyPromotion } from '../../../interface/DashboardData'
 import { Workers } from '../../Workers'
 
@@ -11,12 +12,55 @@ export class FindClippy extends Workers {
 
     private oldBalance: number = this.bot.userData.currentPoints
 
-    public async doFindClippy(promotion: FindClippyPromotion) {
+    public async doFindClippy(promotion: FindClippyPromotion, page?: Page) {
         const offerId = promotion.offerId
         const activityType = promotion.activityType
 
+        if (this.bot.rewardsVersion === 'modern' && page) {
+            this.bot.logger.info(
+                this.bot.isMobile,
+                'FIND-CLIPPY',
+                `Resolving FindClippy via browser navigation | offerId=${offerId} | url=${promotion.destinationUrl}`
+            )
+            try {
+                const browserContext = page.context()
+                const newPage = await browserContext.newPage()
+                await newPage.goto(promotion.destinationUrl, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {})
+                await this.bot.utils.wait(this.bot.utils.randomDelay(3000, 6000))
+                await newPage.close()
+
+                const newBalance = await this.bot.browser.func.getCurrentPoints()
+                this.gainedPoints = newBalance - this.oldBalance
+
+                if (this.gainedPoints > 0) {
+                    this.bot.userData.currentPoints = newBalance
+                    this.bot.userData.gainedPoints = (this.bot.userData.gainedPoints ?? 0) + this.gainedPoints
+
+                    this.bot.logger.info(
+                        this.bot.isMobile,
+                        'FIND-CLIPPY',
+                        `Completed FindClippy (Browser) | offerId=${offerId} | gainedPoints=${this.gainedPoints} | newBalance=${newBalance}`,
+                        'green'
+                    )
+                } else {
+                    this.bot.logger.warn(
+                        this.bot.isMobile,
+                        'FIND-CLIPPY',
+                        `FindClippy (Browser) completed but no points gained yet | offerId=${offerId} | balance=${newBalance}`
+                    )
+                }
+                return
+            } catch (browserError) {
+                this.bot.logger.error(
+                    this.bot.isMobile,
+                    'FIND-CLIPPY',
+                    `Browser navigation failed: ${browserError instanceof Error ? browserError.message : String(browserError)}. Falling back to API...`
+                )
+            }
+        }
+
         try {
-            if (!this.bot.requestToken) {
+            if (!this.bot.requestToken && this.bot.rewardsVersion === 'classic') {
                 this.bot.logger.warn(
                     this.bot.isMobile,
                     'FIND-CLIPPY',

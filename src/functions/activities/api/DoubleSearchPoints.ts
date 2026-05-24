@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
+import type { Page } from 'patchright'
 import { Workers } from '../../Workers'
 import { PromotionalItem } from '../../../interface/DashboardData'
 
@@ -7,12 +8,56 @@ export class DoubleSearchPoints extends Workers {
 
     private fingerprintHeader: { [x: string]: string } = {}
 
-    public async doDoubleSearchPoints(promotion: PromotionalItem) {
+
+
+    public async doDoubleSearchPoints(promotion: PromotionalItem, page?: Page) {
         const offerId = promotion.offerId
         const activityType = promotion.activityType
 
+        if (this.bot.rewardsVersion === 'modern' && page) {
+            this.bot.logger.info(
+                this.bot.isMobile,
+                'DOUBLE-SEARCH-POINTS',
+                `Resolving DoubleSearchPoints via browser navigation | offerId=${offerId} | url=${promotion.destinationUrl}`
+            )
+            try {
+                const browserContext = page.context()
+                const newPage = await browserContext.newPage()
+                await newPage.goto(promotion.destinationUrl, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {})
+                await this.bot.utils.wait(this.bot.utils.randomDelay(3000, 6000))
+                await newPage.close()
+
+                const data = await this.bot.browser.func.getDashboardData()
+                const promotionalItem = data.promotionalItems.find(item =>
+                    item.name.toLowerCase().includes('ww_banner_optin_2x')
+                )
+
+                if (promotionalItem) {
+                    this.bot.logger.warn(
+                        this.bot.isMobile,
+                        'DOUBLE-SEARCH-POINTS',
+                        `Unable to find or activate Double Search Points via browser | offerId=${offerId}`
+                    )
+                } else {
+                    this.bot.logger.info(
+                        this.bot.isMobile,
+                        'DOUBLE-SEARCH-POINTS',
+                        `Activated Double Search Points (Browser) | offerId=${offerId}`,
+                        'green'
+                    )
+                }
+                return
+            } catch (browserError) {
+                this.bot.logger.error(
+                    this.bot.isMobile,
+                    'DOUBLE-SEARCH-POINTS',
+                    `Browser navigation failed: ${browserError instanceof Error ? browserError.message : String(browserError)}. Falling back to API...`
+                )
+            }
+        }
+
         try {
-            if (!this.bot.requestToken) {
+            if (!this.bot.requestToken && this.bot.rewardsVersion === 'classic') {
                 this.bot.logger.warn(
                     this.bot.isMobile,
                     'DOUBLE-SEARCH-POINTS',

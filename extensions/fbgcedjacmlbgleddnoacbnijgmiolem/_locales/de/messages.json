@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "de-de"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Jetzt kostenlos testen! Suchen Sie mit Bing und erhalten Sie Punkte für tolle Prämien."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Das Angebot gilt nur für neue Microsoft Rewards-Miglieder. Sie werden E-Mails über Microsoft Rewards erhalten, darunter Angebote zu Produkten von Microsoft und seinen Partnern."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Registrieren"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Datenschutz"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Anmelden"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Bedingungen"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Microsoft belohnt Sie"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Nutzen Sie die Microsoft Rewards-Erweiterung für exklusive Bonuspunkte, um jeden Tag neue Sammelmöglichkeiten zu entdecken, Ihren Punktestand zu verfolgen und Bing als Standardsuche einzustellen."
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

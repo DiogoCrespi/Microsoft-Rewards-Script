@@ -138,8 +138,8 @@ export function getRuntimeBase(projectRoot, isDev = false) {
     return path.join(projectRoot, isDev ? 'src' : 'dist')
 }
 
-export function getSessionPath(runtimeBase, sessionPath, email) {
-    return path.join(runtimeBase, 'browser', sessionPath, email)
+export function getSessionPath(projectRoot, sessionPath, email) {
+    return path.join(projectRoot, sessionPath, email)
 }
 
 export async function loadCookies(sessionBase, type = 'desktop') {

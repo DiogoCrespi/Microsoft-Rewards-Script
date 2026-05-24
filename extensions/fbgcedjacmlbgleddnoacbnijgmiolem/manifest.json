@@ -1,0 +1,64 @@
+{
+  "background": {
+    "service_worker": "rootServiceWorker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/16x16.png",
+      "32": "images/32x32.png",
+      "48": "images/48x48.png",
+      "128": "images/128x128.png"
+    }
+  },
+  "chrome_settings_overrides": {
+    "search_provider": {
+      "favicon_url": "https://www.bing.com/favicon.ico",
+      "is_default": true,
+      "prepopulated_id": 3,
+      "search_url": "https://www.bing.com/search?FORM=U523MF&PC=__PARAM__U523&q={searchTerms}",
+      "suggest_url": "https://www.bing.com/osjson.aspx?FORM=U523DF&PC=__PARAM__U523&query={searchTerms}"
+    }
+  },
+  "default_locale": "en",
+  "description": "__MSG_RewardsDesc__",
+  "externally_connectable": {
+    "matches": [
+      "https://www.bing.com/*",
+      "https://browserdefaults.microsoft.com/*"
+    ]
+  },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "icons": {
+    "16": "images/16x16.png",
+    "32": "images/32x32.png",
+    "48": "images/48x48.png",
+    "128": "images/128x128.png"
+  },
+  "manifest_version": 3,
+  "name": "__MSG_RewardsTitle__",
+  "permissions": [
+    "cookies",
+    "management",
+    "notifications",
+    "alarms",
+    "storage",
+    "scripting",
+    "declarativeNetRequest"
+  ],
+  "short_name": "__MSG_RewardsTitle__",
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "version": "2.23",
+  "web_accessible_resources": [
+    {
+      "matches": [
+      ],
+      "resources": [
+        "*.png"
+      ]
+    }
+  ]
+}

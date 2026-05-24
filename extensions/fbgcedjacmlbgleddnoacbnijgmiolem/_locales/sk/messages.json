@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "sk-sk"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Vyskúšajte si to hneď, zadarmo! Pri hľadaní pomocou Bingu budete ďalej získavať body za skvelé odmeny."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Ponuka je platná pre nových členov Microsoft Rewards. Budete dostávať e-maily o Microsoft Rewards, vrátane ponúk týkajúcich sa produktov Microsoftu a partnerov."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Pripojiť sa"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Ochrana osobných údajov"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Prihlásiť sa"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Podmienky"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Získajte odmeny od Microsoftu"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Pomocou rozšírenia Microsoft Rewards môžete nájsť nové spôsoby, ako každý deň získavať body, ľahko sledovať body a nastaviť predvolené vyhľadávanie na Bing."
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "lv-lv"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "Izmēģiniet to tūlīt, bez maksas! Meklējot pakalpojumā Bing, jūs saņemsit punktus lieliskām atlīdzībām."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "Piedāvājums derīgs jauniem Microsoft Rewards dalībniekiem. Jūs saņemsit e-pasta ziņojumus par Microsoft Rewards, tostarp piedāvājumus par Microsoft un partneru produktiem."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "Pievienoties"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "Konfidencialitāte"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "Pierakstīties"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "Nosacījumi"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "Saņemiet atlīdzību no Microsoft"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "Izmantojiet Microsoft Rewards paplašinājumu, lai atrastu jaunas iespējas, kā pelnīt katru dienu, vienkārši sekotu saviem punktiem un iestatītu noklusējuma meklēšanu uz pakalpojumu Bing"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

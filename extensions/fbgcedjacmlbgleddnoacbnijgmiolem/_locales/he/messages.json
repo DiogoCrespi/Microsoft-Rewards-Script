@@ -1,0 +1,46 @@
+{
+   "ExtnLanguage": {
+      "description": "Language",
+      "message": "he-il"
+   },
+   "Flyout_Signup_Description": {
+      "description": "Rewards flyout Signup description",
+      "message": "נסה זאת עכשיו בחינם! תוכל להמשיך להרוויח נקודות לקראת פרסים גדולים בעת חיפוש באמצעות Bing."
+   },
+   "Flyout_Signup_Disclaimer": {
+      "description": "Rewards flyout Signup disclaimer",
+      "message": "ההצעה תקפה לחברי Microsoft Rewards חדשים. תקבל הודעות דואר אלקטרוני לגבי Microsoft Rewards, כולל הצעות לגבי מוצרים של Microsoft ושל שותפים."
+   },
+   "Flyout_Signup_Join": {
+      "description": "Rewards flyout Signup join",
+      "message": "הצטרף"
+   },
+   "Flyout_Signup_Privacy": {
+      "description": "Rewards flyout Signup privacy",
+      "message": "פרטיות"
+   },
+   "Flyout_Signup_Separator": {
+      "description": "Separator between Terms and Privacy links",
+      "message": " | "
+   },
+   "Flyout_Signup_SignIn": {
+      "description": "Rewards flyout Signup sign in link",
+      "message": "היכנס"
+   },
+   "Flyout_Signup_Terms": {
+      "description": "Rewards flyout Signup terms",
+      "message": "תנאים"
+   },
+   "Flyout_Signup_Title": {
+      "description": "Rewards flyout Signup title",
+      "message": "קבל פרסים מ- Microsoft"
+   },
+   "RewardsDesc": {
+      "description": "Microsoft Rewards Description",
+      "message": "השתמש בתוסף Microsoft Rewards כדי למצוא דרכים חדשות להרוויח מדי יום, לעקוב בקלות אחר הנקודות שלך ולהגדיר את חיפוש ברירת המחדל שלך ל- Bing"
+   },
+   "RewardsTitle": {
+      "description": "Microsoft Rewards title",
+      "message": "Microsoft Bing Search with Rewards"
+   }
+}

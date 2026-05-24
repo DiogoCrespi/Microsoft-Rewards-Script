@@ -1,0 +1,46 @@
+{
+  "ExtnLanguage": {
+    "description": "Language",
+    "message": "pl-pl"
+  },
+  "Flyout_Signup_Description": {
+    "description": "Rewards flyout Signup description",
+    "message": "Wypróbuj teraz, bezpłatnie! Podczas wyszukiwania w usłudze Bing będziesz zdobywał punkty w celu uzyskania wspaniałych nagród."
+  },
+  "Flyout_Signup_Disclaimer": {
+    "description": "Rewards flyout Signup disclaimer",
+    "message": "Oferta ważna dla nowych członków programu Microsoft Rewards. Otrzymasz wiadomości e-mail z informacjami o programie Microsoft Rewards, w tym oferty produktów firmy Microsoft i partnerów."
+  },
+  "Flyout_Signup_Join": {
+    "description": "Rewards flyout Signup join",
+    "message": "Dołącz"
+  },
+  "Flyout_Signup_Privacy": {
+    "description": "Rewards flyout Signup privacy",
+    "message": "Prywatność"
+  },
+  "Flyout_Signup_Separator": {
+    "description": "Separator between Terms and Privacy links",
+    "message": " | "
+  },
+  "Flyout_Signup_SignIn": {
+    "description": "Rewards flyout Signup sign in link",
+    "message": "Zaloguj się"
+  },
+  "Flyout_Signup_Terms": {
+    "description": "Rewards flyout Signup terms",
+    "message": "Warunki"
+  },
+  "Flyout_Signup_Title": {
+    "description": "Rewards flyout Signup title",
+    "message": "Uzyskaj nagrody od firmy Microsoft"
+  },
+  "RewardsDesc": {
+    "description": "Microsoft Rewards Description",
+    "message": "Użyj rozszerzenia Microsoft Rewards, aby znaleźć nowe sposoby na zdobywanie punktów każdego dnia, łatwo śledzić punkty i ustawić domyślne wyszukiwanie w usłudze Bing"
+  },
+  "RewardsTitle": {
+    "description": "Microsoft Rewards title",
+    "message": "Microsoft Bing Search with Rewards"
+  }
+}

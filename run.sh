@@ -5,9 +5,12 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 
 echo "=== Verificando DNS ==="
-# Tenta destravar e ajustar o DNS (ignora erros se não tiver permissão)
+# Garante que o DNS esteja configurado corretamente (8.8.8.8)
+# Remove o symlink se existir e cria um arquivo estático para evitar sobrescritas do systemd-resolved
 sudo chattr -i /etc/resolv.conf 2>/dev/null
-echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null 2>&1
+sudo rm -f /etc/resolv.conf
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+echo "nameserver 1.1.1.1" | sudo tee -a /etc/resolv.conf > /dev/null
 
 echo "=== Iniciando Bot ==="
 export PLAYWRIGHT_BROWSERS_PATH=/home/diogo/.cache/ms-playwright
