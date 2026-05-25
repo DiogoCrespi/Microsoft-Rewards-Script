@@ -1104,8 +1104,12 @@ export class Workers {
                     for (const cont of promoCont) {
                         const ariaLabel = (cont.getAttribute('aria-label') || '').toLowerCase()
                         if (ariaLabel.includes('spotify')) continue
-                        // Only pending items have "not completed" in aria-label
-                        if (!ariaLabel.includes('offer not completed') && !ariaLabel.includes('oferta não concluída') && !ariaLabel.includes('not completed')) continue
+                        // Check if the card is pending (not completed) in English, Portuguese, etc.
+                        const isPending = ariaLabel.includes('not completed') || 
+                                          ariaLabel.includes('não conclu') || 
+                                          ariaLabel.includes('nao conclu') || 
+                                          ariaLabel.includes('incomplet');
+                        if (!isPending) continue
 
                         const link = cont.querySelector('a[href]') as HTMLAnchorElement | null
                         if (!link) continue
@@ -1128,7 +1132,7 @@ export class Workers {
                         ) continue
 
                         const displayText = (cont.getAttribute('aria-label') || link.textContent || 'Flyout Task')
-                            .replace(/\s*-\s*(offer not completed|oferta não concluída|not completed)/i, '').trim()
+                            .replace(/\s*-\s*(offer not completed|oferta não concluída|não concluída|não concluído|nao concluida|nao concluido|concluída|concluído|concluido|completed|not completed)/i, '').trim()
                             .replace(/\n/g, ' ').substring(0, 100)
 
                         if (!targetLinks.some(t => t.href === href)) {
@@ -1256,12 +1260,12 @@ export class Workers {
                         const completedConts = Array.from(document.querySelectorAll('.promo_cont[aria-label]'))
                         for (const cont of completedConts) {
                             const ariaLabel = (cont.getAttribute('aria-label') || '').toLowerCase()
-                            // A completed card does NOT have "not completed" in its aria-label
-                            if (
-                                ariaLabel.includes('offer not completed') ||
-                                ariaLabel.includes('oferta não concluída') ||
-                                ariaLabel.includes('not completed')
-                            ) continue
+                            // A completed card does NOT have pending status in its aria-label
+                            const isPending = ariaLabel.includes('not completed') || 
+                                              ariaLabel.includes('não conclu') || 
+                                              ariaLabel.includes('nao conclu') || 
+                                              ariaLabel.includes('incomplet');
+                            if (isPending) continue
                             const link = cont.querySelector('a[href]') as HTMLAnchorElement | null
                             if (link) allLinks.push(link.getAttribute('href') || '')
                         }
