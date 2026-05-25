@@ -1155,11 +1155,12 @@ export class Workers {
                     this.bot.logger.info(this.bot.isMobile, 'EXTENSION-ACTIVITIES', `Clicking card directly in flyout: "${card.text}"`)
 
                     try {
-                        // Strategy: click the <a> link inside the .promo_cont directly within the flyout page.
+                        // Strategy: find the <a> link inside the .promo_cont directly within the flyout page,
+                        // assign it a unique ID, and then use ghostClick to simulate a real human click with coordinates.
                         // The flyout has JS event handlers on these links that register the reward with Bing's servers.
-                        // Opening the URL in a new tab bypasses these handlers — clicking in-page does not.
-                        // The link has target="_top", so it navigates extPage itself to the task URL.
-                        const clicked = await extPage.evaluate((href: string) => {
+                        const uniqueId = `ext-card-${Math.random().toString(36).substring(2, 9)}`
+                        
+                        const found = await extPage.evaluate(({ href, id }) => {
                             const conts = Array.from(document.querySelectorAll('.promo_cont[aria-label]'))
                             for (const cont of conts) {
                                 const link = cont.querySelector('a[href]') as HTMLAnchorElement | null
@@ -1168,16 +1169,15 @@ export class Workers {
                                 // Match by href (partial, ignoring rnoreward param differences)
                                 const normalize = (u: string) => u.replace(/[?&]rnoreward=1/g, '').replace(/&&/g, '&')
                                 if (normalize(linkHref).includes(normalize(href).substring(0, 60))) {
-                                    link.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, cancelable: true }))
-                                    link.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true }))
-                                    link.click()
+                                    link.setAttribute('id', id)
+                                    link.scrollIntoView({ behavior: 'smooth', block: 'center' })
                                     return true
                                 }
                             }
                             return false
-                        }, card.href)
+                        }, { href: card.href, id: uniqueId })
 
-                        if (!clicked) {
+                        if (!found) {
                             this.bot.logger.warn(this.bot.isMobile, 'EXTENSION-ACTIVITIES', `Could not find link in flyout for "${card.text}", falling back to direct navigation...`)
                             // Fallback: navigate directly but with rnoreward removed
                             let fullUrl = card.href.startsWith('/') ? 'https://www.bing.com' + card.href : card.href
@@ -1189,7 +1189,15 @@ export class Workers {
                             await extPage.goto(fullUrl, { waitUntil: 'domcontentloaded', timeout: 20000 }).catch(() => {})
                         } else {
                             // Wait for the click to trigger navigation
-                            await extPage.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {})
+                            const navPromise = extPage.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {})
+                            
+                            // Use ghost cursor to click realistically
+                            await this.bot.browser.utils.ghostClick(extPage, `#${uniqueId}`).catch(async () => {
+                                // fallback if ghostClick fails
+                                await extPage.locator(`#${uniqueId}`).click({ timeout: 5000 }).catch(() => {})
+                            })
+                            
+                            await navPromise
                         }
 
                         await this.bot.utils.wait(3000)
