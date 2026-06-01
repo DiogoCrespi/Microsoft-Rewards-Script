@@ -980,6 +980,249 @@ export class Workers {
         }
     }
 
+    public async doKeepEarningActivities(page: Page) {
+        this.bot.logger.info(this.bot.isMobile, 'KEEP-EARNING', 'Checking for incomplete "Keep Earning" / "Continuar ganhando" activities...')
+
+        try {
+            if (page.isClosed()) return
+
+            // Navigate to /earn if not already there
+            const currentUrl = page.url()
+            if (!currentUrl.includes('rewards.bing.com/earn')) {
+                await page.goto('https://rewards.bing.com/earn', { waitUntil: 'networkidle', timeout: 20000 }).catch(() => {})
+                await this.bot.utils.wait(3000)
+            }
+
+            await this.dismissGetRewardsWelcome(page)
+
+            // Scroll to trigger lazy-load of all cards (smooth, more human-like)
+            await page.evaluate(async () => {
+                window.scrollBy({ top: document.body.scrollHeight, behavior: 'smooth' })
+                await new Promise(r => setTimeout(r, 1500))
+                window.scrollBy({ top: -document.body.scrollHeight, behavior: 'smooth' })
+            }).catch(() => {})
+            await this.bot.utils.wait(this.bot.utils.randomDelay(2000, 3500))
+
+            // Locate the "Keep Earning" / "Continuar ganhando" section and extract incomplete card info
+            // Cards are identified by: cursor-pointer, absence of completion signals, and presence of a point badge
+            type CardInfo = { title: string; index: number }
+            const incompleteCards: CardInfo[] = await page.evaluate(() => {
+                // Find the section header
+                const allHeaders = Array.from(document.querySelectorAll('h1, h2, h3, h4'))
+                let sectionHeader: Element | null = null
+                for (const h of allHeaders) {
+                    const text = (h.textContent || '').trim().toLowerCase()
+                    if (text.includes('continuar ganhando') || text.includes('keep earning')) {
+                        sectionHeader = h
+                        break
+                    }
+                }
+
+                if (!sectionHeader) return []
+
+                // Walk up to find the section container (parent that contains more than just the header)
+                let sectionContainer: Element | null = sectionHeader.parentElement
+                for (let i = 0; i < 6 && sectionContainer; i++) {
+                    // Stop when we find a container that has more sibling sections
+                    const siblings = Array.from(sectionContainer.parentElement?.children ?? [])
+                    if (siblings.length > 1) break
+                    sectionContainer = sectionContainer.parentElement
+                }
+
+                if (!sectionContainer) return []
+
+                // Find all clickable card elements within this section
+                const cardCandidates = Array.from(
+                    sectionContainer.querySelectorAll('[class*="cursor-pointer"], [role="button"], button, a[href]')
+                )
+
+                const results: { title: string; index: number }[] = []
+                const completionSignals = [
+                    'concluído', 'concluido', 'completed', 'resgatado', 'claimed', 'ganhou', 'won',
+                    'parabéns', 'congratulations'
+                ]
+                const checkSignals = ['check', 'complete', 'done', 'finished', 'conclu']
+
+                let cardIndex = 0
+                for (const card of cardCandidates) {
+                    const rect = card.getBoundingClientRect()
+                    if (rect.width === 0 || rect.height === 0) continue
+
+                    const fullText = ((card as HTMLElement).innerText || card.textContent || '').trim()
+                    if (fullText.length < 3) continue
+
+                    const lowerText = fullText.toLowerCase()
+
+                    // Skip if already completed (text signal)
+                    if (completionSignals.some(s => lowerText.includes(s))) continue
+
+                    // Skip if disabled
+                    if (card.hasAttribute('disabled') || card.getAttribute('aria-disabled') === 'true') continue
+
+                    // Must have a point badge (+N) to be a reward card
+                    const hasPoints = /\+\s*\d+/.test(fullText) || /\b(5|10|15|20|30|40|50|100)\b/.test(fullText)
+                    if (!hasPoints) continue
+
+                    // Check DOM for completion signals (check icons, aria-labels, etc.)
+                    const cardHtml = card.innerHTML.toLowerCase()
+                    const isCompleted = checkSignals.some(sig =>
+                        cardHtml.includes(`class="${sig}`) ||
+                        cardHtml.includes(`class='${sig}`) ||
+                        (card.getAttribute('aria-label') || '').toLowerCase().includes(sig)
+                    )
+                    if (isCompleted) continue
+
+                    // Extract a clean title from the first meaningful text line
+                    let title = fullText
+                    if (title.includes('\n')) title = (title.split('\n')[0] ?? title).trim()
+
+                    if (title.length > 80) title = title.substring(0, 80)
+
+                    // Deduplicate by title
+                    if (!results.some(r => r.title === title)) {
+                        results.push({ title, index: cardIndex })
+                    }
+                    cardIndex++
+                }
+
+                return results
+            })
+
+            if (incompleteCards.length === 0) {
+                this.bot.logger.info(this.bot.isMobile, 'KEEP-EARNING', 'No incomplete "Keep Earning" cards found.')
+                return
+            }
+
+            this.bot.logger.info(this.bot.isMobile, 'KEEP-EARNING', `Found ${incompleteCards.length} incomplete cards: ${incompleteCards.map(c => `"${c.title}"`).join(', ')}`)
+
+            const sessionAttempted = new Set<string>()
+
+            for (const card of incompleteCards) {
+                if (page.isClosed()) return
+                if (sessionAttempted.has(card.title)) continue
+                sessionAttempted.add(card.title)
+
+                // Re-check we are on /earn
+                const urlCheck = page.url()
+                if (!urlCheck.includes('rewards.bing.com/earn')) {
+                    await page.goto('https://rewards.bing.com/earn', { waitUntil: 'domcontentloaded', timeout: 20000 }).catch(() => {})
+                    await this.bot.utils.wait(3000)
+                }
+
+                // Locate the card in the page — get its bounding box for coordinate-based click
+                // (avoids DOM id mutation which can be detected by MutationObserver anti-bot scripts)
+                this.bot.logger.info(this.bot.isMobile, 'KEEP-EARNING', `Processing card: "${card.title}"`)
+
+                const cardBox = await page.evaluate(({ title }) => {
+                    const allHeaders = Array.from(document.querySelectorAll('h1, h2, h3, h4'))
+                    let sectionContainer: Element | null = null
+                    for (const h of allHeaders) {
+                        const text = (h.textContent || '').trim().toLowerCase()
+                        if (text.includes('continuar ganhando') || text.includes('keep earning')) {
+                            let container: Element | null = h.parentElement
+                            for (let i = 0; i < 6 && container; i++) {
+                                const siblings = Array.from(container.parentElement?.children ?? [])
+                                if (siblings.length > 1) break
+                                container = container.parentElement
+                            }
+                            sectionContainer = container
+                            break
+                        }
+                    }
+                    if (!sectionContainer) return null
+
+                    const candidates = Array.from(
+                        sectionContainer.querySelectorAll('[class*="cursor-pointer"], [role="button"], button, a[href]')
+                    )
+                    for (const el of candidates) {
+                        const rect = el.getBoundingClientRect()
+                        if (rect.width === 0 || rect.height === 0) continue
+                        const text = ((el as HTMLElement).innerText || el.textContent || '').trim()
+                        if (!text.startsWith(title.substring(0, 20))) continue
+                        // Scroll into view WITHOUT mutating the DOM
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                        return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2, width: rect.width, height: rect.height }
+                    }
+                    return null
+                }, { title: card.title })
+
+                if (!cardBox) {
+                    this.bot.logger.warn(this.bot.isMobile, 'KEEP-EARNING', `Could not locate card element for "${card.title}". Skipping.`)
+                    continue
+                }
+
+                // Human-like delay after scroll brings card into view
+                await this.bot.utils.wait(this.bot.utils.randomDelay(1500, 3000))
+
+                // Perform a coordinate-based mouse click — no DOM mutation, hard to distinguish from human click
+                const [newPage] = await Promise.all([
+                    page.context().waitForEvent('page', { timeout: 6000 }).catch(() => null),
+                    page.mouse.click(cardBox.x, cardBox.y).catch(async () => {
+                        // Fallback: use Playwright locator click at the center coordinates
+                        await page.locator(`text="${card.title.substring(0, 30)}"`).first().click({ timeout: 5000 }).catch(() => {})
+                    })
+                ])
+
+                await this.bot.utils.wait(this.bot.utils.randomDelay(2500, 4000))
+
+
+                if (newPage) {
+                    // Card opened a new tab — wait and close
+                    this.bot.logger.info(this.bot.isMobile, 'KEEP-EARNING', `Card "${card.title}" opened a new tab. Waiting for activity to register...`)
+                    try {
+                        await newPage.waitForLoadState('domcontentloaded', { timeout: 8000 }).catch(() => {})
+                        await this.bot.utils.wait(this.bot.utils.randomDelay(5000, 10000))
+                    } finally {
+                        await newPage.close().catch(() => {})
+                    }
+                } else {
+                    // Likely opened a side panel — try to solve it
+                    this.bot.logger.info(this.bot.isMobile, 'KEEP-EARNING', `Card "${card.title}" opened a side panel. Solving...`)
+                    const urlAfterClick = page.url()
+                    if (!urlAfterClick.includes('rewards.bing.com/earn')) {
+                        await page.goto('https://rewards.bing.com/earn', { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {})
+                        await this.bot.utils.wait(3000)
+                    } else {
+                        await this.solveUiPromotionPanel(page, sessionAttempted)
+
+                        // Close any open panel
+                        const closeSelectors = [
+                            'button[aria-label*="Close" i]',
+                            'button[aria-label*="Fechar" i]',
+                            'button:has-text("Close")',
+                            'button:has-text("Fechar")',
+                        ]
+                        for (const sel of closeSelectors) {
+                            if (page.isClosed()) break
+                            const btn = page.locator(sel).first()
+                            if (await btn.isVisible()) {
+                                await btn.click().catch(() => {})
+                                await this.bot.utils.wait(1500)
+                                break
+                            }
+                        }
+                        // Fallback Escape
+                        if (!page.isClosed()) {
+                            await page.keyboard.press('Escape').catch(() => {})
+                            await this.bot.utils.wait(1000)
+                        }
+                    }
+                }
+
+                await this.bot.utils.wait(this.bot.utils.randomDelay(4000, 8000))
+            }
+
+            this.bot.logger.info(this.bot.isMobile, 'KEEP-EARNING', 'Finished processing "Keep Earning" activities.', 'green')
+
+        } catch (error) {
+            this.bot.logger.error(
+                this.bot.isMobile,
+                'KEEP-EARNING',
+                `Error in doKeepEarningActivities: ${error instanceof Error ? error.message : String(error)}`
+            )
+        }
+    }
+
     public async dismissGetRewardsWelcome(page: Page) {
         if (page.isClosed()) return
         try {

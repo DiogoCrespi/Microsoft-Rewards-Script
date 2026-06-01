@@ -18,6 +18,7 @@ import { Login } from './browser/auth/Login'
 import { Workers } from './functions/Workers'
 import Activities from './functions/Activities'
 import { SearchManager } from './functions/SearchManager'
+import { CodmGifts } from './functions/CodmGifts'
 
 import type { Account } from './interface/Account'
 import AxiosClient from './util/Axios'
@@ -370,6 +371,18 @@ export class MicrosoftRewardsBot {
 
                 this.logger.info('main', 'BROWSER', `Mobile Browser started | ${accountEmail}`)
 
+                // Claim Call of Duty: Mobile Store Gifts
+                try {
+                    const codmGifts = new CodmGifts(this)
+                    await codmGifts.claimGifts(this.mainMobilePage, account)
+                } catch (codmError) {
+                    this.logger.error(
+                        'main',
+                        'CODM-GIFTS',
+                        `Failed to claim COD Mobile gifts: ${codmError instanceof Error ? codmError.message : String(codmError)}`
+                    )
+                }
+
                 await this.login.login(this.mainMobilePage, account)
                 await this.workers.dismissGetRewardsWelcome(this.mainMobilePage)
 
@@ -431,6 +444,8 @@ export class MicrosoftRewardsBot {
                 // Reivindicar pontos pendentes e realizar promoções gráficas (ex: Spotify)
                 await this.workers.claimPendingPoints(this.mainMobilePage)
                 await this.workers.doUiEarnActivities(this.mainMobilePage)
+                await this.workers.doKeepEarningActivities(this.mainMobilePage)
+
 
                 const searchPoints = await this.browser.func.getSearchPoints()
                 const missingSearchPoints = this.browser.func.missingSearchPoints(searchPoints, true)

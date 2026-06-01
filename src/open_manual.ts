@@ -3,8 +3,36 @@ import fs from 'fs'
 import path from 'path'
 import readline from 'readline'
 
-const email = 'YOUR_EMAIL@example.com'
+// Resolve email: --email flag > positional arg > first account in accounts.json > placeholder
+function resolveEmail(): string {
+    const args = process.argv.slice(2)
+    const emailFlagIdx = args.findIndex(a => a === '--email' || a === '-email')
+    if (emailFlagIdx !== -1 && args[emailFlagIdx + 1]) {
+        return args[emailFlagIdx + 1]!
+    }
+    // Positional arg that looks like an email
+    const positional = args.find(a => a.includes('@') && !a.startsWith('-'))
+    if (positional) return positional
+
+    // Fallback: first account in accounts.json
+    try {
+        const accountsFile = path.join(__dirname, '../accounts.json')
+        if (fs.existsSync(accountsFile)) {
+            const accounts = JSON.parse(fs.readFileSync(accountsFile, 'utf-8'))
+            if (Array.isArray(accounts) && accounts[0]?.email) {
+                console.log(`[INFO] No email specified. Using first account from accounts.json: ${accounts[0].email}`)
+                return accounts[0].email as string
+            }
+        }
+    } catch { /* ignore */ }
+
+    console.warn('[WARN] Could not resolve email. Using placeholder. Sessions will be saved to the wrong folder!')
+    return 'YOUR_EMAIL@example.com'
+}
+
+const email = resolveEmail()
 const sessionPath = 'sessions'
+
 
 const desktopUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0'
 const mobileUA = 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36 EdgA/122.0.0.0'
