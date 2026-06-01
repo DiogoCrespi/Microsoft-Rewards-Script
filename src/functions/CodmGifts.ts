@@ -64,10 +64,10 @@ export class CodmGifts {
             await page.waitForSelector(nicknameSelector, { timeout: 15000 })
             const nicknameText = await page.locator(nicknameSelector).innerText().catch(() => '')
         
-        this.bot.logger.info(this.bot.isMobile, 'CODM-GIFTS', `Player nickname detected: ${nicknameText}`)
-        if (!nicknameText.toLowerCase().includes('doid17')) {
-            throw new Error(`Nickname mismatch! Expected to contain 'doid17' but got: '${nicknameText}'`)
-        }
+            this.bot.logger.info(this.bot.isMobile, 'CODM-GIFTS', `Player nickname detected: ${nicknameText}`)
+            if (!nicknameText || nicknameText.trim() === '') {
+                throw new Error('No player nickname found! Verification failed.')
+            }
 
         // 4. Navigate to the "PRESENTES" section/tab
         // Try clicking the tab named "PRESENTES" if it exists, or scroll to the h2 category section
