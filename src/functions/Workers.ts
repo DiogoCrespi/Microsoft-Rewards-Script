@@ -295,7 +295,7 @@ export class Workers {
                             )
 
                             await this.bot.activities.doSearchOnBing(basePromotion, page)
-                        } else if (destinationUrl.includes('wqoskey') || destinationUrl.includes('isconversation') || (destinationUrl.includes('quiz') && !destinationUrl.includes('urloffer'))) {
+                        } else if (destinationUrl.includes('wqoskey') || destinationUrl.includes('isconversation') || (destinationUrl.includes('quiz') && !destinationUrl.includes('urloffer')) || destinationUrl.includes('trivia') || destinationUrl.includes('openbook')) {
                             this.bot.logger.info(
                                 this.bot.isMobile,
                                 'ACTIVITY',

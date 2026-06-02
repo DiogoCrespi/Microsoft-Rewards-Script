@@ -16,8 +16,19 @@ function resolveEmail(): string {
 
     // Fallback: first account in accounts.json
     try {
-        const accountsFile = path.join(__dirname, '../accounts.json')
-        if (fs.existsSync(accountsFile)) {
+        const possiblePaths = [
+            path.join(__dirname, 'accounts.json'),
+            path.join(__dirname, '../accounts.json'),
+            path.join(__dirname, '../src/accounts.json')
+        ]
+        let accountsFile = ''
+        for (const p of possiblePaths) {
+            if (fs.existsSync(p)) {
+                accountsFile = p
+                break
+            }
+        }
+        if (accountsFile) {
             const accounts = JSON.parse(fs.readFileSync(accountsFile, 'utf-8'))
             if (Array.isArray(accounts) && accounts[0]?.email) {
                 console.log(`[INFO] No email specified. Using first account from accounts.json: ${accounts[0].email}`)
@@ -67,9 +78,17 @@ async function main() {
 
     // ---- DESKTOP STEP ----
     console.log('\n[1/2] Opening DESKTOP Browser...')
+    const extensionPath = path.join(projectRoot, 'extensions/fbgcedjacmlbgleddnoacbnijgmiolem')
+    const extensionArgs = fs.existsSync(extensionPath)
+        ? [
+              `--disable-extensions-except=${extensionPath}`,
+              `--load-extension=${extensionPath}`
+          ]
+        : []
+
     const desktopBrowser = await rebrowser.chromium.launch({
         headless: false,
-        args: ['--no-sandbox', '--no-first-run', '--no-default-browser-check']
+        args: ['--no-sandbox', '--no-first-run', '--no-default-browser-check', ...extensionArgs]
     })
     const desktopContext = await desktopBrowser.newContext({
         userAgent: desktopUA,
